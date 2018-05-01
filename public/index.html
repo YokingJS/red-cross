@@ -127,25 +127,100 @@
       .am-list-item .am-input-control .fake-input-container .fake-input-placeholder {
         text-align: left !important;
       }
-      .am-image-picker-list .am-image-picker-upload-btn:before, .am-image-picker-list .am-image-picker-upload-btn:after
-      {
-        width: 2px !important;
-        height: 4rem !important;
+      @media screen and (min-width: 800px) {
+        .am-number-keyboard-wrapper {
+          height: 400px !important;
+        }
+        .am-number-keyboard-wrapper table tr .am-number-keyboard-item {
+          height: 100px !important;
+          font-size: 40px !important;
+        }
+        .am-list-item .am-list-line .am-list-content, .am-list-item .am-list-line .am-list-extra {
+          font-size: 12px !important;
+          line-height: 40px !important;
+          /* max-width: 60rem; */
+          flex: 1;
+          text-align: left !important;
+        }
+        
+        .am-list-item .am-input-control, .am-list-item .am-input-control .fake-input-container {
+          font-size: 12px !important;
+          line-height: 40px !important;
+        }
+        .am-list-item .am-input-control .fake-input-container {
+          height: 40px !important;
+        }
+        .am-list-item {
+          padding-left: 5px !important;
+          height: 50px !important;
+          flex: 1;
+          background-color: transparent !important;
+        }
+        .am-list-item .am-input-control input, .am-list-item .am-input-control .fake-input-container .fake-input, .am-list-item .am-input-control, .am-list-item .am-input-control .fake-input-container {
+          font-size: 12px !important;
+          line-height: 40px !important;
+          text-align: left !important;
+        }
+        .am-list-item .am-input-clear {
+          width: 20px !important;
+          height: 20px !important;
+          background-size: 25px auto;
+          background-position: 0px 0px;
+        }
+        .am-flexbox .am-flexbox-item {
+          -ms-flex: 1;
+          flex: none !important;
+          width: 90px !important;
+          height: 90px !important;
+          margin-left: 8px;
+          min-width: 10px;
+        }
+        .am-image-picker-list {
+          padding: 0 !important;
+          margin-bottom: 0 !important;
+        }
+        .am-image-picker-list .am-flexbox {
+          margin-bottom: 0 !important;
+        }
+        .am-image-picker-list .am-image-picker-upload-btn:before, .am-image-picker-list .am-image-picker-upload-btn:after
+        {
+          width: 2px !important;
+          height: 40px !important;
+        }
+        /* PC */
+        .am-image-picker-list .am-image-picker-item {
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+          width: 80px !important;
+          height: 80px !important;
+        }
+        .am-image-picker-list .am-image-picker-upload-btn:after {
+          width: 40px !important;
+          height: 2px !important;
+        }
+        .am-image-picker-list .am-image-picker-item .am-image-picker-item-remove {
+          width: 40px !important;
+          height: 40px !important;
+          right: 5px !important;
+          top: 5px !important;
+          background-size: 40px auto !important;
+        }
+        .am-image-picker-list .am-image-picker-upload-btn {
+          border: 2px solid #ddd !important;
+        }
+        .am-flexbox .am-flexbox-item {
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          -ms-flex: 1;
+          flex: 1 1;
+          margin-left: 8px;
+          min-width: 10px;
+        }
       }
-      .am-image-picker-list .am-image-picker-upload-btn:after {
-        width: 4rem !important;
-        height: 2px !important;
-      }
-      .am-image-picker-list .am-image-picker-item .am-image-picker-item-remove {
-        width: 4rem !important;
-        height: 4rem !important;
-        right: 1rem !important;
-        top: 1rem !important;
-        background-size: 4rem auto !important;
-      }
-      .am-image-picker-list .am-image-picker-upload-btn {
-        border: 2px solid #ddd !important;
-      }
+      
     </style>  
     <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
     <script>
