@@ -5,38 +5,52 @@ import {Link} from 'react-router-dom';
 class DonorItem extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      donorItem: this.props.data || {}
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      donorItem: nextProps.data || {}
+    });
   }
 
   render() {
+    const { donorItem = {} } = this.state || {};
+    const {
+      age = '', content = '', currentMoney = '', deployDepartment = '', disease = '', donatorNum = '',
+      id = '', imageUrl = '', name = '', sex = '', status = '', targetMoney = '', title = '', gmtModify = ''
+    } = donorItem;
     return (
-      <Link style={styles.donorItem} to={'/donateDetail/' + '4533555'}>
+      <Link style={styles.donorItem} to={'/donateDetail/' + id}>
         <div style={styles.redCrossInfo}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
             alt=""
             style={styles.redCrossLogo}
           />
-          <span style={{...styles.redCrossName, ...styles.textOverflow}}>普陀区红十字会</span>
+          <span style={{...styles.redCrossName, ...styles.textOverflow}}>{deployDepartment}</span>
           <span style={{
             ...styles.redCrossName,
             ...styles.textOverflow,
             textAlign: 'right'
-          }}>已结束</span>
+          }}>{parseInt(status, 10) === 2 ? "已结束" : (new Date(gmtModify).toLocaleDateString() + '发布')}</span>
         </div>
-        <span style={{...styles.helpBrief, ...styles.textOverflow}}>肺癌引发多种疾病，生活拮据需要社会帮助帮助帮助</span>
-        <span style={styles.donorCondition}>肺癌引发多种肺社会帮助帮助帮助肺癌引发多要社会帮助帮助帮助肺癌引发多种疾病，生活拮据需要社会帮助帮助帮助</span>
+        <span style={{...styles.helpBrief, ...styles.textOverflow}}>{title}</span>
+        <span style={styles.donorCondition}>{content}</span>
         <img
-          src="https://gw.alicdn.com/tfs/TB1Bc4qmxGYBuNjy0FnXXX5lpXa-1500-480.png"
+          src={imageUrl}
           alt=""
           style={styles.donorPhoto}
         />
         <div style={styles.donorInfo}>
-          <span style={{...styles.donorInfoText, maxWidth: '40rem'}}>姓名: 赵晶晶</span>
-          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>性别: 女</span>
-          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>年龄: 45岁</span>
+          <span style={{...styles.donorInfoText, maxWidth: '40rem'}}>姓名: {name}</span>
+          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>性别: {sex ? '男' : '女'}</span>
+          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>年龄: {age}岁</span>
         </div>
         <div style={styles.donorInfo}>
-          <span style={{...styles.donorInfoText, maxWidth: '80rem'}}>病种: 恶性肿瘤</span>
+          <span style={{...styles.donorInfoText, maxWidth: '80rem'}}>病种: {disease}</span>
         </div>
         <div style={{...styles.donateInfo, padding: '0 4rem'}}>
           <div style={styles.donateInfoItem}>
@@ -46,7 +60,7 @@ class DonorItem extends React.Component {
               style={styles.donateInfoIcon}
             />
             <span style={styles.donateInfoItemText}>
-              目标<span style={styles.donateInfoBlueText}>20000</span>元
+              目标<span style={styles.donateInfoBlueText}>{targetMoney}</span>元
             </span>
           </div>
           <div style={styles.donateInfoItem}>
@@ -56,7 +70,7 @@ class DonorItem extends React.Component {
               style={styles.donateInfoIcon}
             />
             <span style={styles.donateInfoItemText}>
-              已筹<span style={styles.donateInfoBlueText}>20000</span>元
+              已筹<span style={styles.donateInfoBlueText}>{currentMoney}</span>元
             </span>
           </div>
           <div style={styles.donateInfoItem}>
@@ -66,7 +80,7 @@ class DonorItem extends React.Component {
               style={styles.donateInfoIcon2}
             />
             <span style={{...styles.donateInfoItemText, ...styles.textOverflow}}>
-              捐款人数<span style={styles.donateInfoBlueText}>20000</span>人
+              捐款人数<span style={styles.donateInfoBlueText}>{donatorNum}</span>人
             </span>
           </div>
         </div>

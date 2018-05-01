@@ -6,16 +6,27 @@ import DonorItem from '../donorItem/index';
 class Donors extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      appealRecordList: this.props.data || []
+    };
+  }
+
+  componentWillReceiveProps(nextprops) {
+    this.setState({
+      appealRecordList: nextprops.data || []
+    });
   }
 
   render() {
+    const { appealRecordList = [] } = this.state || {};
     return (
       <div style={styles.donors}>
         {
-          [1,2,3,4,5,6].map((item, index) => {
+          appealRecordList.map((item, index) => {
             return (
               <DonorItem
                 key={index}
+                data={item}
               />
             );
           })

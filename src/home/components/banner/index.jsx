@@ -8,14 +8,21 @@ class Banner extends React.Component{
     super(props, context);
     this.state={
       bannerList: [
-        'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
-        'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
-        'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
-        'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
-        'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
+        // 'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
+        // 'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
+        // 'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
+        // 'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png',
+        // 'https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
       ]
     };
   }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      bannerList: nextProps.bannerList || []
+    });
+  }
+
   render() {
     const { bannerList = [] } = this.state || {};
     return (
