@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -8,6 +8,11 @@ import FootInfo from '../components/footInfo/index';
 class Page extends React.Component{
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      baseModel: {}
+    };
+
     this.getPageInfo = this.getPageInfo.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
     this.renderIllness = this.renderIllness.bind(this);

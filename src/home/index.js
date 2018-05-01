@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 
@@ -7,6 +7,7 @@ import NavigatorButton from './components/navigatorButton/index';
 import SerarchArea from './components/serarchArea/index'
 import Donors from './components/donors/index';
 import FootInfo from '../components/footInfo/index';
+import request from '../components/request';
 
 const styles = {
   page: {
@@ -22,14 +23,40 @@ const styles = {
 class Page extends React.Component{
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      baseModel: {}
+    };
+    this.reRender = this.reRender.bind(this);
   }
+
+  reRender() {
+    const { baseModel = {} } = this.state || {};
+    this.setState({
+      baseModel: baseModel
+    });
+  }
+
+  componentWillMount() {
+    request.getInitInformation().then(res => {
+      if(!res.errorMsg) {
+        this.state.baseModel = res.data || {};
+      }
+      this.reRender();
+    });
+  }
+
   render() {
+    const { baseModel = {} } = this.state || {};
     return (
       <div style={styles.page}>
-        <Banner style={{width: '100%'}}/>
+        <Banner
+          bannerList={baseModel.urlList || []}
+        />
         <NavigatorButton />
         <SerarchArea />
-        <Donors />
+        <Donors
+          data={baseModel.appealRecordList || []}
+        />
         <FootInfo />
       </div>
     );

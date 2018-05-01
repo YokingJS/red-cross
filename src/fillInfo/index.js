@@ -1,11 +1,10 @@
-'use strict';
 
 import React from 'react';
 
 import { Picker, List, InputItem } from 'antd-mobile';
 
 import FootInfo from '../components/footInfo/index';
-import AuthCode from './components/authCode/index';
+import request from '../components/request';
 
 class FillInfo extends React.Component {
   constructor(props, context) {
@@ -28,6 +27,7 @@ class FillInfo extends React.Component {
     this.onPickInvoice = this.onPickInvoice.bind(this);
     this.getPublicState = this.getPublicState.bind(this);
     this.onPickPublic = this.onPickPublic.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onPickPersionalOrCompany(value) {
@@ -87,10 +87,14 @@ class FillInfo extends React.Component {
     this.state.money = value;
   }
 
+  onSubmit() {
+    console.log(request.requestWechatCode());
+  }
+
   renderButton() {
     return (
       <div style={styles.fixedButton}>
-        <div style={styles.helpButton}>爱心提交</div>
+        <div style={styles.helpButton} onClick={this.onSubmit}>爱心提交</div>
       </div>
     );
   }

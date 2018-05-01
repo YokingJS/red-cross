@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import FootInfo from '../components/footInfo/index';
