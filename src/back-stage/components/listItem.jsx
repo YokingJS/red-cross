@@ -44,9 +44,9 @@ class ListItem extends React.Component {
         <Link style={styles.modelItem} to={'/backStage-fill/' + id}>
           <div style={styles.modelItemButton}>编辑</div>
         </Link>
-        <div style={styles.modelItem}>
-          <div style={styles.modelItemButton}>发布</div>
-        </div>
+        {parseInt(status, 10) === 2 ? <div style={styles.modelItem}>
+          <div style={styles.modelItemButton}>取消发布</div>
+        </div> : null}
       </div>
     );
   }
@@ -62,38 +62,38 @@ const styles = {
   },
   listItem: {
     width: '100%',
-    borderRadius: '1rem',
-    marginTop: '3rem',
+    borderRadius: '5px',
+    marginTop: '10px',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingBottom: '2rem',
+    paddingBottom: '5px',
     backgroundColor: '#fff'
   },
   modelItem: {
-    width: '22.5rem',
-    height: '20rem',
-    borderRadius: '1rem',
-    marginTop: '2rem',
-    marginLeft: '2rem',
+    width: '120px',
+    height: '40px',
+    borderRadius: '5px',
+    marginTop: '5px',
+    marginLeft: '5px',
     backgroundColor: '#F0FFFF',
     display: 'flex',
     flexDirection: 'column'
   },
   modelItemTitle: {
     flex: 1,
-    height: '10rem',
-    fontSize: '4rem',
+    height: '20px',
+    fontSize: '12px',
     color: '#4682B4',
-    lineHeight: '10rem',
+    lineHeight: '20px',
     textAlign: 'center'
   },
   modelItemButton: {
     flex: 1,
-    height: '20rem',
-    fontSize: '5rem',
+    height: '40px',
+    fontSize: '20px',
     color: '#CD5555',
-    lineHeight: '20rem',
+    lineHeight: '40px',
     textAlign: 'center'
   }
 };
