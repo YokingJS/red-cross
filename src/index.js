@@ -2,42 +2,31 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Home from './home/index';
+import DonateDetail from './donate-detail/index';
+import FillInfo from './fillInfo/index';
+import DonateResult from './donatedResult/index';
 
-import Banner from './components/banner/index';
-import NavigatorButton from './components/navigatorButton/index';
-import SerarchArea from './components/serarchArea/index'
-import Donors from './components/donors/index';
-import FootInfo from './components/footInfo/index';
-
-const styles = {
-  page: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#F5F5F5'
-  }
-};
-
-class Page extends React.Component{
-  constructor(props, context) {
-    super(props, context);
-  }
+class App extends React.Component {
   render() {
     return (
-      <div style={styles.page}>
-        <Banner style={{width: '100%'}}/>
-        <NavigatorButton />
-        <SerarchArea />
-        <Donors />
-        <FootInfo />
-      </div>
+      <BrowserRouter
+        forceRefresh={false}
+        keyLength={12}
+      >
+        <div>
+          <Route path="/donateDetail" component={DonateDetail} />
+          <Route path="/fillInfo" component={FillInfo} />
+          <Route path="/donateResult" component={DonateResult} />
+          <Route exact path="/" component={Home} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
 
-ReactDOM.render(<Page />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 
 
 

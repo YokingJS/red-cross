@@ -1,5 +1,6 @@
 
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class DonorItem extends React.Component {
   constructor(props, context) {
@@ -8,7 +9,7 @@ class DonorItem extends React.Component {
 
   render() {
     return (
-      <div style={styles.donorItem}>
+      <Link style={styles.donorItem} to={'/donateDetail/' + '4533555'}>
         <div style={styles.redCrossInfo}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
@@ -16,6 +17,11 @@ class DonorItem extends React.Component {
             style={styles.redCrossLogo}
           />
           <span style={{...styles.redCrossName, ...styles.textOverflow}}>普陀区红十字会</span>
+          <span style={{
+            ...styles.redCrossName,
+            ...styles.textOverflow,
+            textAlign: 'right'
+          }}>已结束</span>
         </div>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>肺癌引发多种疾病，生活拮据需要社会帮助帮助帮助</span>
         <span style={styles.donorCondition}>肺癌引发多种肺社会帮助帮助帮助肺癌引发多要社会帮助帮助帮助肺癌引发多种疾病，生活拮据需要社会帮助帮助帮助</span>
@@ -64,7 +70,7 @@ class DonorItem extends React.Component {
             </span>
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 }

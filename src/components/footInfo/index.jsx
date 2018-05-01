@@ -9,7 +9,7 @@ class FootInfo extends React.Component {
 
   render() {
     return (
-      <div style={styles.footInfo}>
+      <div style={{...styles.footInfo,  backgroundColor: this.props.backgroundColor || '#fff'}}>
         <img
           src='https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png'
           alt=''
@@ -31,8 +31,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff'
+    alignItems: 'center'
   },
   redCrossLogo: {
     width: '8rem',

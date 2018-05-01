@@ -1,11 +1,16 @@
 
 import React from 'react';
-import ButtomItem from '../buttomItem/index';
+
+import ButtonItem from '../buttonItem/index';
 
 class NavigatorButton extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      showModel: false
+    };
   }
+
   render() {
     return (
       <div style={styles.navigator}>
@@ -18,19 +23,19 @@ class NavigatorButton extends React.Component {
           <span style={{...styles.projectName, ...styles.textOverflow}}>“同心博爱” 百姓公益救助项目</span>
         </div>
         <div style={styles.buttonBox}>
-          <ButtomItem
+          <ButtonItem
             title={'关于我们'}
             buttonUrl={'https://gw.alicdn.com/tfs/TB1g._NoHGYBuNjy0FoXXciBFXa-128-128.png'}
           />
-          <ButtomItem
+          <ButtonItem
             title={'项目介绍'}
             buttonUrl={'https://gw.alicdn.com/tfs/TB1uSgvoKuSBuNjy1XcXXcYjFXa-128-128.png'}
           />
-          <ButtomItem
+          <ButtonItem
             title={'申请对象'}
             buttonUrl={'https://gw.alicdn.com/tfs/TB1ACovoKuSBuNjy1XcXXcYjFXa-128-128.png'}
           />
-          <ButtomItem
+          <ButtonItem
             title={'救助流程'}
             buttonUrl={'https://gw.alicdn.com/tfs/TB1_MMSoGmWBuNjy1XaXXXCbXXa-128-128.png'}
           />
