@@ -13,6 +13,8 @@ class Page extends React.Component {
       weakerBaseModel: [],
       donorBaseModel: [],
       bannerFiles: [],
+      totalMoney: 0,
+      totalDonator: 0
     };
     this.reRender = this.reRender.bind(this);
     this.onBannerChange = this.onBannerChange.bind(this);
@@ -23,6 +25,31 @@ class Page extends React.Component {
     this.setState({
       ...this.state
     });
+  }
+
+  componentWillMount() {
+    request.getDrftAppealList().then(res => {
+      if (!res.errorMsg) {
+        this.state.weakerBaseModel = res.data || []
+      }
+      this.reRender();
+    });
+
+    request.getDonateOrderList().then(res => {
+      if (!res.errorMsg) {
+        this.state.donorBaseModel = res.data || []
+      }
+      this.reRender();
+    });
+
+    request.getTotalStatisticsData().then(res => {
+      if (!res.errorMsg) {
+        this.state.totalDonator = (res.data || []).totalDonator || 0;
+        this.state.totalMoney = (res.data || []).totalMoney || 0;
+      }
+      this.reRender();
+    });
+
   }
 
   onBannerChange(bannerFiles, type, index) {
@@ -61,7 +88,7 @@ class Page extends React.Component {
     for (let k in json[0]) {
       keyMap.push(k);
     }
-    json.unshift(titleLine);
+    if (json[0].id !== 'ID' && json[0].mobile !== '电话') json.unshift(titleLine);
     let tmpdata = [] // 用来保存转换好的json
 
     // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。  
@@ -88,7 +115,7 @@ class Page extends React.Component {
         v: (v.position.match(/'H'|'T'|'U'/) > 0 && v.v) ? (new Date(v.v)).toLocaleDateString() : v.v
       }
     });
-// console.log(tmpdata);
+
     let outputPos = Object.keys(tmpdata)  // 设置区域,比如表格从A1到D10
     let tmpWB = {
       SheetNames: ['mySheet'], // 保存的表标题
@@ -129,24 +156,10 @@ class Page extends React.Component {
     }, 100); 
   }
 
-  componentWillMount() {
-    request.getDrftAppealList().then(res => {
-      if (!res.errorMsg) {
-        this.state.weakerBaseModel = res.data || []
-      }
-      this.reRender();
-    });
-
-    request.getDonateOrderList().then(res => {
-      if (!res.errorMsg) {
-        this.state.donorBaseModel = res.data || []
-      }
-      this.reRender();
-    });
-  }
-
   render() {
-    const { weakerBaseModel = {}, donorBaseModel = {}, bannerFiles = [] } = this.state || {};
+    const {
+      weakerBaseModel = {}, donorBaseModel = {}, bannerFiles = [], totalDonator = 0, totalMoney = 0
+    } = this.state || {};
     const MARGINTOP = '10px';
     const TITLEWIDTH = '100px';
     const IMAGEWIDTH = '100px';
@@ -155,12 +168,12 @@ class Page extends React.Component {
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>捐赠总金额:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>333元</span>
+          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{totalMoney}元</span>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>捐赠总人数:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>333人</span>
+          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{totalDonator}人</span>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP, height: IMAGEWIDTH}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
@@ -183,7 +196,7 @@ class Page extends React.Component {
             />
           );
         })}
-        <div style={{lineHeight: '70px', fontSize: '20px', color: '#333333', textAlign: 'left', marginTop: '10px'}}>捐助信息列表</div>
+        {donorBaseModel.length > 0 ? <div style={{lineHeight: '70px', fontSize: '20px', color: '#333333', textAlign: 'left', marginTop: '10px'}}>捐助信息列表</div> : null}
         {donorBaseModel.map((item, index) => {
           return (
             <ListItem
@@ -193,7 +206,7 @@ class Page extends React.Component {
             />
           );
         })}
-        <div style={styles.downloadButton} onClick={this.onDownload}>导出救助信息</div>        
+        {donorBaseModel.length > 0 ? <div style={styles.downloadButton} onClick={this.onDownload}>导出救助信息</div> : null}
       </div>
     );
   }

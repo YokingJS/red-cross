@@ -10,7 +10,8 @@ class Page extends React.Component {
       donorFiles: [],
       id: '',
       title: '',
-      content: '',
+      familyDesc: '',
+      patientDesc: '',
       imageUrl: '',
       videoUrl: '',
       name: '',
@@ -22,17 +23,19 @@ class Page extends React.Component {
       deployDepartment: '',
       currentMoney: '',
       donatorNum: '',
-      followUrl: ''
+      projectFollowUp: ''
     };
     this.renderButton = this.renderButton.bind(this);
     this.onHelpImgChange = this.onHelpImgChange.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   componentWillMount() {
     let pageUrl = window.location.pathname || '';
     let requestId = (pageUrl.split('/') || []).pop() || '';
+    if (!requestId.match(/^[0-9]*$/)) return;
     request.getDrftAppealById('?id=' + requestId).then((res) => {
       if (!res.errorMsg) {
         this.setState({
@@ -50,24 +53,31 @@ class Page extends React.Component {
     });
   }
 
-  onSubmit() {
-    const { id = '', title = '', content = '', imageUrl = '', videoUrl = '', name = '',
+  onSubmit(save) {
+    const { id = '', title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
       sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
-      currentMoney = '', donatorNum = '' , followUrl = ''
+      currentMoney = '', donatorNum = '' , projectFollowUp = '', status = '0'
     } = this.state || {};
-    if (title && content && imageUrl && name && sex && age && disease && mobile && targetMoney && deployDepartment
-    && currentMoney && donatorNum && followUrl) {
-      request.saveAppealRecordNotDeploy({
-        id, title, content, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
-        currentMoney, donatorNum, followUrl
-      });
+    if (title && familyDesc && patientDesc && name && sex && age && disease && mobile && targetMoney && deployDepartment
+    && currentMoney && donatorNum) {
+      if (save === 'save') {
+        request.saveAppealRecordNotDeploy({
+          id, title, familyDesc, patientDesc, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
+          currentMoney, donatorNum, projectFollowUp, status
+        });
+      } else {
+        request.saveAppealRecordDeploy({
+          id, title, familyDesc, patientDesc, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
+          currentMoney, donatorNum, projectFollowUp
+        });
+      }
     } else {
       alert('缺少必填项');
-      request.saveAppealRecordNotDeploy({
-        id, title, content, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
-        currentMoney, donatorNum, followUrl
-      });
     }
+  }
+
+  onSave() {
+    this.onSubmit('save');
   }
 
   onChangeInput(item) {
@@ -76,8 +86,11 @@ class Page extends React.Component {
         case 'title':
           this.state.title = value;
           break;
-        case 'content':
-          this.state.content = value;
+        case 'familyDesc':
+          this.state.familyDesc = value;
+          break;
+        case 'patientDesc':
+          this.state.patientDesc = value;
           break;
         case 'name':
           this.state.name = value;
@@ -109,8 +122,8 @@ class Page extends React.Component {
         case 'donatorNum':
           this.state.donatorNum = value;
           break;
-        case 'followUrl': 
-          this.state.followUrl = value;
+        case 'projectFollowUp': 
+          this.state.projectFollowUp = value;
         default: break;
       }
       this.setState({
@@ -126,15 +139,15 @@ class Page extends React.Component {
     return (
       <div style={styles.fixedButton}>
         <div style={styles.helpButton} onClick={this.onSubmit}>发布</div>
-        <div style={{...styles.helpButton, marginLeft: '100px'}} onClick={this.onSubmit}>保存</div>
+        <div style={{...styles.helpButton, marginLeft: '100px'}} onClick={this.onSave}>保存</div>
       </div>
     );
   }
   
   render() {
-    const { donorFiles = [], title = '', content = '', imageUrl = '', videoUrl = '', name = '',
+    const { donorFiles = [], title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
       sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
-      currentMoney = '', donatorNum = '' , followUrl = ''
+      currentMoney = '', donatorNum = '' , projectFollowUp = ''
     } = this.state || {};
     const MARGINTOP = '10px';
     const TITLEWIDTH = '100px';
@@ -154,17 +167,28 @@ class Page extends React.Component {
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>求助信息:</span>
+          <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>家庭情况:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
-              value={content}
-              onChange={this.onChangeInput('content')}
+              value={familyDesc}
+              onChange={this.onChangeInput('familyDesc')}
+            ></InputItem>
+          </div>
+        </div>
+        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
+          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>患者境况:</span>
+          <div style={styles.boxWithBorder} className="pickerBox">
+            <InputItem
+              clear
+              value={patientDesc}
+              onChange={this.onChangeInput('patientDesc')}
             ></InputItem>
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP, height: IMAGEWIDTH}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>求助图片:</span>
           <div style={{...styles.boxWithBorder, height: IMAGEWIDTH, width: IMAGEWIDTH}} className="pickerBox">
             <ImagePicker
@@ -175,7 +199,7 @@ class Page extends React.Component {
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>求助视频:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -263,7 +287,7 @@ class Page extends React.Component {
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
-              type="money"
+              type="number"
               value={currentMoney}
               onChange={this.onChangeInput('currentMoney')}
             ></InputItem>
@@ -304,14 +328,14 @@ class Page extends React.Component {
           <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>将获取点击“发布”时的时间</span>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>项目跟进:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
               placeholder="请正确填写url，否则跟进链接无法访问"
-              value={followUrl}
-              onChange={this.onChangeInput('followUrl')}
+              value={projectFollowUp}
+              onChange={this.onChangeInput('projectFollowUp')}
             ></InputItem>
           </div>
         </div>

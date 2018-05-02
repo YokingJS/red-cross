@@ -1,9 +1,24 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import request from '../../components/request';
 
 class ListItem extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.cancelDeploy = this.cancelDeploy.bind(this);
+  }
+
+  cancelDeploy() {
+    const data = this.props.data || {};
+    const {
+      id = ''
+    } = data;
+    request.undeployAppealRecord('?id=' + id).then(res => {
+      if (!res.errorMsg) {
+        alert('取消成功');
+      }
+      window.location.href = window.location.href;
+    });
   }
 
   render() {
@@ -65,9 +80,9 @@ class ListItem extends React.Component {
             <div style={styles.modelItemButton}>编辑</div>
           </Link> : null
         }
-        {parseInt(status, 10) === 2 && isWeaker ? <div style={styles.modelItem}>
-          <div style={styles.modelItemButton}>取消发布</div>
-        </div> : null}
+        {parseInt(status, 10) !== 1 && isWeaker ? null : <div style={styles.modelItem}>
+          <div style={styles.modelItemButton} onClick={this.cancelDeploy}>取消发布</div>
+        </div>}
       </div>
     );
   }
