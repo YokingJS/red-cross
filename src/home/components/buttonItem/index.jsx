@@ -10,6 +10,7 @@ class ButtonItem extends React.Component {
     const prop = this.props || {};
     this.state = {
       title: prop.title || '',
+      content: prop.content || '',
       buttonUrl: prop.buttonUrl || '',
       isShowModal: false
     };
@@ -19,15 +20,13 @@ class ButtonItem extends React.Component {
   }
 
   reRender() {
-    const { isShowModal = false } = this.state || {};
     this.setState({
-      isShowModal: isShowModal
+      ...(this.state || {})
     });
   }
 
   onCloseModal() {
     this.state.isShowModal = false;
-    console.log('hide'+this.state.isShowModal);
     this.reRender();
   }
 
@@ -38,34 +37,37 @@ class ButtonItem extends React.Component {
 
   render() {
     let ondivclick = (e) => {
-      console.log(e.target);
       this.onShowModal();
     };
-    const { title = '', buttonUrl = '', isShowModal = false } = this.state || {};
+    const { title = '', buttonUrl = '', isShowModal = false, content = '' } = this.state || {};
+    let contentArray = content.split('<br/>') || [];
     return (
-      [<div style={styles.buttonBox} onClick={ondivclick || function() {}} key={1}>
-        <img
-          src={buttonUrl}
-          alt=""
-          style={styles.buttonStyle}
-        />
-        <div style={{flex: 1}}/>
-        <span style={{...styles.buttonName, ...styles.textOverflow}}>{title}</span>
-      </div>,
-      <Modal
-        visible={isShowModal}
-        transparent
-        maskClosable={true}
-        onClose={this.onCloseModal}
-        footer={[{ text: 'Ok', onPress: () => { this.onCloseModal() } }]}
-        key={2}
-      >
-        <div style={styles.modalContent}>
-          <span style={styles.modalTitle}>{title}</span>
-          <div style={styles.modalContext}>fhinnknkjwnfknewnfkwenfkjnwejfnkwenfjknfkjeqnfneqknj</div>
-        </div>
-    </Modal>  
-    ]
+      [
+        <div style={styles.buttonBox} onClick={ondivclick || function() {}} key={1}>
+          <img
+            src={buttonUrl}
+            alt=""
+            style={styles.buttonStyle}
+          />
+          <div style={{flex: 1}}/>
+          <span style={{...styles.buttonName, ...styles.textOverflow}}>{title}</span>
+        </div>,
+        <Modal
+          visible={isShowModal}
+          transparent
+          maskClosable={true}
+          onClose={this.onCloseModal}
+          footer={[{ text: 'Ok', onPress: () => { this.onCloseModal() } }]}
+          key={2}
+        >
+          <div style={styles.modalContent}>
+            <span style={styles.modalTitle}>{title}</span>
+            {contentArray.map((item, index) => {
+              return (<div style={styles.modalContext} key={index}>{item}</div>);
+            })}
+          </div>
+        </Modal>  
+      ]
     );
   }
 

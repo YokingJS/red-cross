@@ -7,44 +7,65 @@ class ListItem extends React.Component {
   }
 
   render() {
-    console.log(this.props.data);
     const data = this.props.data || {};
+    const isWeaker = this.props.isWeaker || false;
     const {
-      age = '', name = '', currentMoney = '', donatorNum = '', status = '', gmtModify = '', id = ''
+      age = '', name = '', currentMoney = '', donatorNum = '', status = '', gmtModify = '', id = '', mobile = '',
+      money = '', donateTime = '', isNeedInvoice = '', weixinPayId = '', appealRecordTitle = '', remark = ''
     } = data;
     // 救助姓名、已筹金额、捐款人数，项目状态、发布时间
     return (
       <div style={styles.listItem}>
+        {isWeaker ? null : [
+          <div style={styles.modelItem} key={1}>
+            <span style={styles.modelItemTitle}>用户id</span>
+            <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{id}</span>
+          </div>,
+          <div style={styles.modelItem} key={2}>
+            <span style={styles.modelItemTitle}>微信订单</span>
+            <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{weixinPayId}</span>
+          </div>,
+          <div style={styles.modelItem} key={3}>
+            <span style={styles.modelItemTitle}>捐助项目</span>
+            <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{appealRecordTitle}</span>
+          </div>
+        ]}
         <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>救助姓名</span>
+          <span style={styles.modelItemTitle}>{isWeaker ? '救助人姓名' : '姓名/公司'}</span>
           <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{name}</span>
         </div>
         <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>救助人年龄</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{age}</span>
+          <span style={styles.modelItemTitle}>{isWeaker ? '救助人年龄' : '捐助人电话'}</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? age : mobile}</span>
         </div>
         <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>已筹金额</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{currentMoney}元</span>
+          <span style={styles.modelItemTitle}>{isWeaker ? '已筹金额' : '捐助金额'}</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney : money}元</span>
         </div>
         <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>捐款人数</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{donatorNum}人</span>
-        </div>
-        <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>项目状态</span>
+          <span style={styles.modelItemTitle}>{isWeaker ? '捐款人数' : '捐助时间'}</span>
           <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>
-            {parseInt(status, 10) === 1 ? '进行中' : (parseInt(status, 10) === 2 ? "已结束" : "未开始")}
+            {isWeaker ? donatorNum : (new Date(donateTime)).toLocaleDateString()}人
           </span>
         </div>
         <div style={styles.modelItem}>
-          <span style={styles.modelItemTitle}>发布时间</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{(new Date(gmtModify)).toLocaleDateString()}</span>
+          <span style={styles.modelItemTitle}>{isWeaker ? '项目状态' : '需要发票'}</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>
+            {isWeaker ? parseInt(status, 10) === 1 ? '进行中' : (parseInt(status, 10) === 2 ? "已结束" : "未开始") : (isNeedInvoice ? '是' : '否')}
+          </span>
         </div>
-        <Link style={styles.modelItem} to={'/backStage-fill/' + id}>
-          <div style={styles.modelItemButton}>编辑</div>
-        </Link>
-        {parseInt(status, 10) === 2 ? <div style={styles.modelItem}>
+        <div style={styles.modelItem}>
+          <span style={styles.modelItemTitle}>{isWeaker ? '发布时间' : '备注信息'}</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>
+            {isWeaker ? (new Date(gmtModify)).toLocaleDateString() : remark}
+          </span>
+        </div>
+        {
+          isWeaker ? <Link style={styles.modelItem} to={'/backStage-fill/' + id}>
+            <div style={styles.modelItemButton}>编辑</div>
+          </Link> : null
+        }
+        {parseInt(status, 10) === 2 && isWeaker ? <div style={styles.modelItem}>
           <div style={styles.modelItemButton}>取消发布</div>
         </div> : null}
       </div>

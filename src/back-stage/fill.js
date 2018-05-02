@@ -8,6 +8,7 @@ class Page extends React.Component {
     super(props, context);
     this.state = {
       donorFiles: [],
+      id: '',
       title: '',
       content: '',
       imageUrl: '',
@@ -29,6 +30,19 @@ class Page extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillMount() {
+    let pageUrl = window.location.pathname || '';
+    let requestId = (pageUrl.split('/') || []).pop() || '';
+    request.getDrftAppealById('?id=' + requestId).then((res) => {
+      if (!res.errorMsg) {
+        this.setState({
+          ...(res.data || {})
+        });
+      }
+    }, resE => {
+    });
+  }
+
   onHelpImgChange(donorFiles, type, index) {
     this.setState({
       donorFiles,
@@ -37,7 +51,23 @@ class Page extends React.Component {
   }
 
   onSubmit() {
-    console.log(this.state);
+    const { id = '', title = '', content = '', imageUrl = '', videoUrl = '', name = '',
+      sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
+      currentMoney = '', donatorNum = '' , followUrl = ''
+    } = this.state || {};
+    if (title && content && imageUrl && name && sex && age && disease && mobile && targetMoney && deployDepartment
+    && currentMoney && donatorNum && followUrl) {
+      request.saveAppealRecordNotDeploy({
+        id, title, content, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
+        currentMoney, donatorNum, followUrl
+      });
+    } else {
+      alert('缺少必填项');
+      request.saveAppealRecordNotDeploy({
+        id, title, content, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
+        currentMoney, donatorNum, followUrl
+      });
+    }
   }
 
   onChangeInput(item) {
@@ -96,6 +126,7 @@ class Page extends React.Component {
     return (
       <div style={styles.fixedButton}>
         <div style={styles.helpButton} onClick={this.onSubmit}>发布</div>
+        <div style={{...styles.helpButton, marginLeft: '100px'}} onClick={this.onSubmit}>保存</div>
       </div>
     );
   }
@@ -221,7 +252,7 @@ class Page extends React.Component {
             <InputItem
               clear
               type="targetMoney"
-              value={content}
+              value={targetMoney}
               onChange={this.onChangeInput('targetMoney')}
             ></InputItem>
           </div>

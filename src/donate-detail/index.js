@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 import FootInfo from '../components/footInfo/index';
+import request from '../components/request';
 
 class Page extends React.Component{
   constructor(props, context) {
@@ -27,12 +28,25 @@ class Page extends React.Component{
   getPageInfo() {
     let pageUrl = window.location.pathname || '';
     let requestId = (pageUrl.split('/') || []).pop() || '';
+    request.getDeployAppealById('?id=' + requestId).then(resS => {
+      console.log(resS);
+      if(!resS.errorMsg) {
+        this.setState({
+          baseModel: resS.data || {}
+        });
+      }
+    });
   }
 
   componentWillReceiveProps(newProps) {
   }
 
   renderInfo() {
+    const baseModel = this.state.baseModel || {};
+    const {
+      deployDepartment = '', status = '0', gmtModify = '', title = '', targetMoney = '', currentMoney = '',
+      donatorNum = '', videoUrl = ''
+    } = baseModel;
     return (
       <div style={styles.topInfo}>
         <div style={styles.redCrossInfo}>
@@ -41,79 +55,88 @@ class Page extends React.Component{
             alt=""
             style={styles.redCrossLogo}
           />
-          <span style={{...styles.redCrossName, ...styles.textOverflow}}>普陀区红十字会</span>
+          <span style={{...styles.redCrossName, ...styles.textOverflow}}>{deployDepartment}</span>
           <span style={{
             ...styles.redCrossName,
             ...styles.textOverflow,
             textAlign: 'right'
-          }}>已结束</span>
+          }}>{parseInt(status, 10) === 2 ? "已结束" : (new Date(gmtModify).toLocaleDateString() + '发布')}</span>
         </div>
-        <span style={{...styles.helpBrief, ...styles.textOverflow}}>肺癌引发多种疾病，生活拮据需要社会帮助</span>
+        <span style={{...styles.helpBrief, ...styles.textOverflow}}>{title}</span>
         <div style={styles.donateCountInfo}>
           <div style={styles.donateCountItem}>
-            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>20000元</span>
+            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{targetMoney}元</span>
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>目标金额</span>
           </div>
           <div style={styles.splitLine}/>
           <div style={styles.donateCountItem}>
-            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>20000元</span>
+            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{currentMoney}元</span>
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>已筹金额</span>
           </div>
           <div style={styles.splitLine}/>
           <div style={styles.donateCountItem}>
-            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>180人</span>
+            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{donatorNum}人</span>
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>捐款人数</span>
           </div>
         </div>
-        <div style={styles.videoBox}>
+        {videoUrl ? <div style={styles.videoBox}>
           <video
-            src="http://183.131.48.145/vlive.qqvideo.tc.qq.com/A-C8EZ_x1zxcfuIZFy1WRoPdcCS-b3YiYCkKaL439oSo/o0200qh1oc4.p201.1.mp4?vkey=26267BE905B0312552D86E60575A90E211CD8BCBA98E2737B9BAF92A70EFCC3EB72D9A1611DC61DD77E912B9CC00E8B1CD6E594330F8A39CC4CD48AEB66BC62E22D269F48107BE52BFF07FDE019AED926D7899C9EDE7AABAB35B6D99D7B288DD4EE5A8F13A5FDB03CA709FB7148AB69E010F4D58844B4AF7&platform=10901&sdtfrom=&fmt=shd&level=0"
+            // src="http://183.131.48.145/vlive.qqvideo.tc.qq.com/A-C8EZ_x1zxcfuIZFy1WRoPdcCS-b3YiYCkKaL439oSo/o0200qh1oc4.p201.1.mp4?vkey=26267BE905B0312552D86E60575A90E211CD8BCBA98E2737B9BAF92A70EFCC3EB72D9A1611DC61DD77E912B9CC00E8B1CD6E594330F8A39CC4CD48AEB66BC62E22D269F48107BE52BFF07FDE019AED926D7899C9EDE7AABAB35B6D99D7B288DD4EE5A8F13A5FDB03CA709FB7148AB69E010F4D58844B4AF7&platform=10901&sdtfrom=&fmt=shd&level=0"
+            src={videoUrl}
             style={styles.video} controls="controls"
             ref='video'
             onClick={() => {
               this.refs.video.play();
             }}
           />
-        </div>
+        </div> : null}
       </div>
     );
   }
 
   renderIllness() {
+    const baseModel = this.state.baseModel || {};
+    const {
+      content = '', imageUrl = ''
+    } = baseModel;
     return (
       <div style={styles.topInfo}>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>一、求助者家庭及收入情况</span>
-        <p style={styles.normalText}>求助者家庭及收入情况求助者家庭及收入情况求助者家庭及收入情况求助者家庭及收入情况求助者家庭
-          及收入情况求助者家庭及收入情况求助者家庭及收入情况求助者家庭及收入情况求助者家庭及收入情况</p>
+        <p style={styles.normalText}>{content}</p>
         <img
-          src='https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
+          // src='https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
+          src={imageUrl}
           alt=''
           style={styles.normalImage}
         />
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>二、患者情况</span>
         <p style={styles.normalText}>患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况
           患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况</p>
-        <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、帮助情况</span>
+        {/* <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、帮助情况</span>
         <p style={styles.normalText}>帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况
-          帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况</p>
+          帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况</p> */}
       </div>
     );
   }
 
   renderContactWay() {
+    const baseModel = this.state.baseModel || {};
+    const {
+      name = '', mobile = ''
+    } = baseModel;
     return (
       <div style={styles.topInfo}>
-        <span style={{...styles.helpBrief, ...styles.textOverflow}}>四、联系方式</span>
+        <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、联系方式</span>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>求助人:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>zhangsan</span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>{name}</span>
         </div>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>13333333333</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span>
+          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>{mobile}</span>
+          {/* <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span> */}
         </div>
-        <div style={{...styles.rowLine, marginTop: '10rem'}}>
+        {/* <div style={{...styles.rowLine, marginTop: '10rem'}}>
           <span style={styles.largeText}>长风街道金沙居委会卫生干部:</span>
           <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '2rem'}}>肖春红</span>
         </div>
@@ -121,15 +144,15 @@ class Page extends React.Component{
           <span style={styles.largeText}>联系电话:</span>
           <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>13333333333</span>
           <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span>
-        </div>
+        </div> */}
         <div style={{...styles.rowLine, marginTop: '10rem'}}>
           <span style={styles.largeText}>普陀区红十字会联系人:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '2rem'}}>肖春红</span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '2rem'}}></span>
         </div>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>13333333333</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span>
+          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>62441118-1108</span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 1109</span>
         </div>
       </div>
     );
