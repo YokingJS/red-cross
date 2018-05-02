@@ -97,12 +97,12 @@ class Page extends React.Component{
   renderIllness() {
     const baseModel = this.state.baseModel || {};
     const {
-      content = '', imageUrl = ''
+      imageUrl = '', familyDesc = '', patientDesc = ''
     } = baseModel;
     return (
       <div style={styles.topInfo}>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>一、求助者家庭及收入情况</span>
-        <p style={styles.normalText}>{content}</p>
+        <p style={styles.normalText}>{familyDesc}</p>
         <img
           // src='https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
           src={imageUrl}
@@ -110,8 +110,7 @@ class Page extends React.Component{
           style={styles.normalImage}
         />
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>二、患者情况</span>
-        <p style={styles.normalText}>患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况
-          患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况患者情况</p>
+        <p style={styles.normalText}>{patientDesc}</p>
         {/* <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、帮助情况</span>
         <p style={styles.normalText}>帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况
           帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况</p> */}
@@ -159,10 +158,14 @@ class Page extends React.Component{
   }
 
   renderButton() {
+    const baseModel = this.state.baseModel || {};
+    const {
+      projectFollowUp = '', id = '', name = ''
+    } = baseModel;
     return (
       <div style={styles.fixedButton}>
-        <Link to={'/fillInfo'} style={styles.helpButton}>帮助他</Link>
-        <a href={'http://baidu.com'} style={styles.followButton}>项目跟进</a>
+        <Link to={'/fillInfo/' + id + '/' + name} style={styles.helpButton}>帮助他</Link>
+        <a href={projectFollowUp} style={styles.followButton}>项目跟进</a>
       </div>
     );
   }

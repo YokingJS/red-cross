@@ -12,22 +12,49 @@ class FillInfo extends React.Component {
     this.state = {
       persionalOrCompany: 1,
       persionalOrCompanyArray: [{label: '个人', value: 1}, {label: '公司', value: 2}],
-      inputNameValue: '',
-      inputPhoneNumber: '',
+      name: '',
+      mobile: '',
       money: '',
       isGetInvoice: 0,
-      isPublic: 0
+      invoiceHeader: '',
+      invoiceName: '',
+      invoiceMobile: '',
+      invoiceAddress: '',
+      remark: '',
+      isDisclosure: 0,
+      weakerName: '',
+      weakerId: ''
     };
+    this.reRender = this.reRender.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this);
+
     this.getPersionalOrCompanyLabel = this.getPersionalOrCompanyLabel.bind(this);
     this.onPickPersionalOrCompany = this.onPickPersionalOrCompany.bind(this);
-    this.onChangeInputName = this.onChangeInputName.bind(this);
-    this.onChangeInputPhone = this.onChangeInputPhone.bind(this);
-    this.onChangeMoney = this.onChangeMoney.bind(this);    
+
     this.getInvoiceState = this.getInvoiceState.bind(this);
     this.onPickInvoice = this.onPickInvoice.bind(this);
+
     this.getPublicState = this.getPublicState.bind(this);
     this.onPickPublic = this.onPickPublic.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    let pageUrl = window.location.pathname || '';
+    let paramArray = pageUrl.split('/');
+    if (paramArray.length > 2) {
+      this.state.weakerName = decodeURIComponent(paramArray[paramArray.length - 1]);
+      this.state.weakerId = paramArray[paramArray.length - 2];
+      this.reRender();
+    } else {
+      alert('捐赠信息丢失');
+    }
+  }
+
+  reRender() {
+    this.setState({
+      ...this.state
+    });
   }
 
   onPickPersionalOrCompany(value) {
@@ -56,16 +83,16 @@ class FillInfo extends React.Component {
 
   getPublicState(array) {
     let ret = '';
-    const { isPublic = 0 } = this.state || {};
+    const { isDisclosure = 0 } = this.state || {};
     array.forEach((item) => {
-      if (item.value === isPublic) ret = item.label;
+      if (item.value === isDisclosure) ret = item.label;
     });
     return ret;
   }
 
   onPickPublic(value) {
     this.setState({
-        isPublic: value[0] || 0
+      isDisclosure: value[0] || 0
     });
   }
 
@@ -75,20 +102,46 @@ class FillInfo extends React.Component {
     });
   }
 
-  onChangeInputName(value) {
-    this.state.inputNameValue = value;
-  }
-
-  onChangeInputPhone(value) {
-    this.state.inputPhoneNumber = value;
-  }
-
-  onChangeMoney(value) {
-    this.state.money = value;
-  }
-
   onSubmit() {
     console.log(request.requestWechatCode());
+  }
+
+  onChangeInput(item) {
+    let onChangeInput = (value) => {
+      switch(item) {
+        case 'name':
+          this.state.name = value;
+          break;
+        case 'mobile':
+          this.state.mobile = value;
+          break;
+        case 'money':
+          this.state.money = value;
+          break;
+        case 'invoiceHeader':
+          this.state.invoiceHeader = value;
+          break;
+        case 'invoiceName':
+          this.state.invoiceName = value;
+          break;
+        case 'invoiceMobile':
+          this.state.age = value;
+          break;
+        case 'invoiceAddress':
+          this.state.disease = value;
+          break;
+        case 'remark':
+          this.state.videoUrl = value;
+          break;
+        default: break;
+      }
+      this.setState({
+        ...this.state
+      });
+    };
+
+    return onChangeInput;
+
   }
 
   renderButton() {
@@ -100,7 +153,11 @@ class FillInfo extends React.Component {
   }
 
   render() {
-    const { persionalOrCompany = 1, persionalOrCompanyArray =[] } = this.state || {};
+    const {
+      persionalOrCompany = 1, persionalOrCompanyArray =[], weakerName = '', name = '', mobile = '',
+      money = '', invoiceHeader = '', invoiceName = '', invoiceMobile = '', invoiceAddress = '',
+      remark = ''
+    } = this.state || {};
     return (
       <div style={styles.fillInfo}>
         <div style={{...styles.rowLine, padding: '8rem 4rem'}}>
@@ -112,14 +169,14 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, color: '#ff3322', marginLeft: '2rem'}}>感谢您的爱心支持，请填写以下捐赠信息</span>
         </div>
         <div style={styles.rowLine}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>捐赠时间:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{(new Date()).toLocaleDateString()}</span>
+          <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>{(new Date()).toLocaleDateString()}</span>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>捐赠意向:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>zhangsan</span>
+          <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>{weakerName}</span>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
@@ -144,7 +201,8 @@ class FillInfo extends React.Component {
             <InputItem
                 clear
                 placeholder="请输入名字"
-                onChange={this.onChangeInputName}
+                value={name}
+                onChange={this.onChangeInput('name')}
             ></InputItem>
           </div>
         </div>
@@ -155,15 +213,16 @@ class FillInfo extends React.Component {
             <InputItem
                 clear
                 placeholder="请输入手机号"
-                onChange={this.onChangeInputPhone}
+                value={mobile}
+                onChange={this.onChangeInput('mobile')}
                 type="phone"
             ></InputItem>
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>币种:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>人民币</span>
+          <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>人民币</span>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
@@ -172,25 +231,12 @@ class FillInfo extends React.Component {
             <InputItem
                 clear
                 placeholder="请输入金额"
-                onChange={this.onChangeMoney}
+                value={money}
+                onChange={this.onChangeInput('money')}
                 type="money"
             ></InputItem>
           </div>
         </div>
-        {/* <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>验证码:</span>
-          <div style={styles.boxWithBorder} className="pickerBox">
-            <InputItem
-                clear
-                placeholder="请输入名字"
-                onChange={this.onChangeInputName}
-            ></InputItem>
-          </div>
-          <div style={{...styles.boxWithBorder, border: 'none', flex: 0.7}}>
-            <AuthCode />
-          </div>
-        </div> */}
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>开具发票:</span>
@@ -212,9 +258,10 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>抬头:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder="请输入发票抬头"
-                onChange={this.onChangeInputName}
+              clear
+              placeholder="请输入发票抬头"
+              value={invoiceHeader}
+              onChange={this.onChangeInput('invoiceHeader')}
             ></InputItem>
           </div>
         </div>
@@ -223,9 +270,10 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系人:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder="请填写联系人"
-                onChange={this.onChangeInputName}
+              clear
+              placeholder="请填写联系人"
+              value={invoiceName}
+              onChange={this.onChangeInput('invoiceName')}
             ></InputItem>
           </div>
         </div>
@@ -234,10 +282,11 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系电话:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder="请输入手机号"
-                onChange={this.onChangeInputPhone}
-                type="phone"
+              clear
+              placeholder="请输入手机号"
+              value={invoiceMobile}
+              onChange={this.onChangeInput('invoiceMobile')}
+              type="phone"
             ></InputItem>
           </div>
         </div>
@@ -246,9 +295,10 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>邮件地址:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder="请填写邮件地址"
-                onChange={this.onChangeInputName}
+              clear
+              placeholder="请填写邮件地址"
+              value={invoiceAddress}
+              onChange={this.onChangeInput('invoiceAddress')}
             ></InputItem>
           </div>
         </div>
@@ -257,10 +307,9 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>邮编:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder="请输入邮编"
-                onChange={this.onChangeInputPhone}
-                type="number"
+              clear
+              placeholder="请输入邮编"
+              type="number"
             ></InputItem>
           </div>
         </div>
@@ -269,9 +318,10 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>备注:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
-                clear
-                placeholder=""
-                onChange={this.onChangeInputName}
+              clear
+              placeholder=""
+              value={remark}
+              onChange={this.onChangeInput('remark')}
             ></InputItem>
           </div>
         </div>
@@ -325,6 +375,14 @@ const styles = {
     marginLeft: '2rem',
     border: '1px solid #999999',
     borderRadius: '1rem',
+    height: '10rem',
+    flex: 1,
+    padding: '0 2rem',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  boxNoBorder: {
+    marginLeft: '2rem',
     height: '10rem',
     flex: 1,
     padding: '0 2rem',

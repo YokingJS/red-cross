@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
+const HOST_PORT = '//47.92.75.66:80';
+
 let getRequest = (url) => {
   return fetch(url, {
     method: 'GET',
@@ -19,56 +21,71 @@ let postRequest = (url, param) => {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'data': param})
+    body: param
   }).then(res => {
     return res.json();
   });
 };
 
 let getInitInformation = () => {
-  return getRequest('//118.123.167.142:9090/getInitInformation');
+  return getRequest(HOST_PORT + '/getInitInformation');
 };
 
 let getDrftAppealList = () => {
-  return getRequest('//118.123.167.142:9090/getDrftAppealList?index=0&size=10000');
+  return getRequest(HOST_PORT + '/getDrftAppealList?index=0&size=10000');
 };
 
 let getDonateOrderList= () => {
-  return getRequest('//118.123.167.142:9090/getDonateOrderList?index=0&size=10000');
+  return getRequest(HOST_PORT + '/getDonateOrderList?index=0&size=10000');
 };
 
 let requestWechatCode = () => {
   let locationHref = window.location.href;
   let redirect_uri = 'http%3a%2f%2fpt.jiaziworld.com';
 //   getRequest('https://open.weixin.qq.com/connect/qrconnect?appid=wx85e543017679058f&redirect_uri='+ redirect_uri +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect');
-  return getRequest('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85e543017679058f&redirect_uri=http%3a%2f%2fpt.jiaziworld.com%2fWebs%2fGetMemberCode.aspx&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1');
+  return getRequest('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85e543017679058f&redirect_uri=http%3a%2f%2fpthh.svell.cn&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1');
 };
 
 let saveAppealRecordNotDeploy = (param) => {
-  return postRequest('//118.123.167.142:9090/saveAppealRecordNotDeploy', JSON.stringify(param));
+  return postRequest(HOST_PORT + '/saveAppealRecordNotDeploy', JSON.stringify(param));
 };
 
+let saveAppealRecordDeploy = (param) => {
+  return postRequest(HOST_PORT + '/saveAppealRecordDeploy', JSON.stringify(param));
+}
+
 let getDrftAppealById = (paramUrl) => {
-  return getRequest('//118.123.167.142:9090/getDrftAppealById' + paramUrl);
+  return getRequest(HOST_PORT + '/getDrftAppealById' + paramUrl);
 };
 
 let getDeployAppealById = (paramUrl) => {
-  return getRequest('//118.123.167.142:9090/getDeployAppealById' + paramUrl);
+  return getRequest(HOST_PORT + '/getDeployAppealById' + paramUrl);
 };
 
 let getOrderByCondition = (paramUrl) => {
-  return getRequest('//118.123.167.142:9090/getOrderByCondition' + paramUrl);
+  return getRequest(HOST_PORT + '/getOrderByCondition' + paramUrl);
+};
+
+let getTotalStatisticsData = () => {
+  return getRequest(HOST_PORT + '/getTotalStatisticsData');
+};
+
+let undeployAppealRecord = (paramUrl) => {
+  return getRequest(HOST_PORT + '/undeployAppealRecord' + paramUrl);
 };
 
 let request =  {
   getInitInformation: getInitInformation,
   requestWechatCode: requestWechatCode,
   getDrftAppealList: getDrftAppealList,
+  saveAppealRecordDeploy: saveAppealRecordDeploy,
   saveAppealRecordNotDeploy: saveAppealRecordNotDeploy,
   getDrftAppealById: getDrftAppealById,
   getDeployAppealById: getDeployAppealById,
   getOrderByCondition: getOrderByCondition,
-  getDonateOrderList: getDonateOrderList
+  getDonateOrderList: getDonateOrderList,
+  getTotalStatisticsData: getTotalStatisticsData,
+  undeployAppealRecord: undeployAppealRecord
 };
 
 export default request;
