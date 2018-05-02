@@ -19,6 +19,9 @@
         flex: 1;
       }
       * {-webkit-box-sizing: border-box; box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
+      .slider-slide, .slider-list {
+        height: 50rem !important;
+      }
       .am-list-item {
         padding-left: 1rem !important;
         height: 10rem !important;
@@ -87,8 +90,8 @@
       .am-picker-col-indicator {
         height: 8rem !important;
         top: 102px;
-        border-top: 1PX solid #333 !important;
-        border-bottom: 1PX solid #333 !important;
+        border-top: 1px solid #333 !important;
+        border-bottom: 1px solid #333 !important;
       }
       .am-list-item .am-input-control input, .am-list-item .am-input-control .fake-input-container .fake-input,
       .am-list-item .am-input-control, .am-list-item .am-input-control .fake-input-container {
@@ -127,7 +130,7 @@
       .am-list-item .am-input-control .fake-input-container .fake-input-placeholder {
         text-align: left !important;
       }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .am-number-keyboard-wrapper {
           height: 400px !important;
         }
@@ -266,5 +269,6 @@
   </head>
   <body>
     <div id="root" style="width: 100%"></div>
+    <a href="" download="捐助人信息.xlsx" id="hf"></a>  
   </body>
 </html>

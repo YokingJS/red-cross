@@ -1,19 +1,78 @@
 
 import React from 'react';
 import { TextareaItem } from 'antd-mobile';
+import { Modal } from 'antd-mobile';
+import request from '../../../components/request';
 
 class SearchArea extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      isShowModal: false,
+      donateInfoList: []
+    };
+
+    this.reRender = this.reRender.bind(this);
     this.onSearchDonate = this.onSearchDonate.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+    this.onShowModal = this.onShowModal.bind(this);
+    this.renderDonateInfoList = this.renderDonateInfoList.bind(this);
+  }
+
+  reRender() {
+    this.setState({
+      ...(this.state || {})
+    });
   }
 
   onSearchDonate() {
-    console.log(this.refs.search.state.value);
+    let value = ((this.refs.search || {}).state || {}).value || '';
+    if (!value) return;
+    value = value.replace(/\s+/g,"");
+    let name = value.substring(0, value.length - 4);
+    let mobile = value.substring(value.length - 4, value.length);
+    request.getOrderByCondition('?name=' + name + '&mobile=' + mobile).then(resS => {
+      console.log(resS);
+      if (!resS.errorMsg) {
+        this.setState({
+          donateInfoList: resS.data || []
+        });
+        this.onShowModal();
+      }
+    });
+  }
+
+  onCloseModal() {
+    this.state.isShowModal = false;
+    this.reRender();
+  }
+
+  onShowModal() {
+    this.state.isShowModal = true;
+    this.reRender();
+  }
+
+  renderDonateInfoList() {
+    const { donateInfoList = [] } = this.state || {};
+    let retHtml = donateInfoList.map((item, index) => {
+      const {
+        name = '', money = '', mobile = '', gmtModify = ''
+      } = item;
+      return (
+        <div>
+          <div style={styles.modalContext} >姓名：{name}</div>
+          <div style={styles.modalContext} >金额：{money}</div>
+          <div style={styles.modalContext} >手机：{mobile}</div>
+          <div style={styles.modalContext} >最后捐助时间：{(new Date(gmtModify)).toLocaleDateString()}</div>
+        </div>
+      );
+    });
+    return retHtml;
   }
 
   render() {
+    const { isShowModal = false } = this.state || {};
     return (
       <div style={styles.searchArea}>
         <span style={{...styles.searchTitle, ...styles.textOverflow}}>捐款查询平台</span>
@@ -32,6 +91,19 @@ class SearchArea extends React.Component {
             style={{paddingRight: '1rem'}}
           />
         </div>
+        <Modal
+          visible={isShowModal}
+          transparent
+          maskClosable={true}
+          onClose={this.onCloseModal}
+          footer={[{ text: 'Ok', onPress: () => { this.onCloseModal() } }]}
+          key={2}
+        >
+          <div style={styles.modalContent}>
+            <span style={styles.modalTitle}>捐款信息</span>
+            {this.renderDonateInfoList()}
+          </div>
+        </Modal> 
       </div>
     );
   }
@@ -75,5 +147,28 @@ const styles = {
     width: '5rem',
     height: '5rem',
     marginLeft: '4rem'
+  },
+  modalContent: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '30rem',
+    overflow: 'scroll'
+  },
+  modalTitle: {
+    height: '8rem',
+    textAlign: 'left',
+    fontSize: '5rem',
+    color: '#333333',
+    lineHeight: '8rem'
+  },
+  modalContext: {
+    width: '90rem',
+    maxHeight: '80rem',
+    textAlign: 'left',
+    fontSize: '3.6rem',
+    color: '#666666',
+    lineHeight: '4.5rem',
+    wordBreak: 'break-all'
   }
 };
