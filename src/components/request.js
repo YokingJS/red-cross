@@ -39,11 +39,40 @@ let getDonateOrderList= () => {
   return getRequest(HOST_PORT + '/getDonateOrderList?index=0&size=10000');
 };
 
-let requestWechatCode = () => {
-  let locationHref = window.location.href;
-  let redirect_uri = 'http%3a%2f%2fpt.jiaziworld.com';
-//   getRequest('https://open.weixin.qq.com/connect/qrconnect?appid=wx85e543017679058f&redirect_uri='+ redirect_uri +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect');
-  return getRequest('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85e543017679058f&redirect_uri=http%3a%2f%2fpthh.svell.cn&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1');
+let getBrandWCPayRequest = (data) => {
+  let WeixinJSBridge = window.WeixinJSBridge;
+
+  function onBridgeReady(){
+    WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+            "appId": "wx85e543017679058f",  
+            "timeStamp": data.timestamp || '', 
+            "nonceStr": data.nonce || '', 
+            "package": data.packageName || '',     
+            "signType": "MD5",
+            "paySign": data.signature || '' //微信签名 
+        },
+        (res) => {     
+            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              alert('ok');
+            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+        }
+    ); 
+  }
+  if (typeof WeixinJSBridge == "undefined"){
+    if( document.addEventListener ){
+        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+    }else if (document.attachEvent){
+        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+    }
+  }else{
+    onBridgeReady();
+  }
+};
+
+let unifiedOrder = (param) => {
+  return postRequest(HOST_PORT + '/unifiedOrder', JSON.stringify(param));
 };
 
 let saveAppealRecordNotDeploy = (param) => {
@@ -76,7 +105,7 @@ let undeployAppealRecord = (paramUrl) => {
 
 let request =  {
   getInitInformation: getInitInformation,
-  requestWechatCode: requestWechatCode,
+  unifiedOrder: unifiedOrder,
   getDrftAppealList: getDrftAppealList,
   saveAppealRecordDeploy: saveAppealRecordDeploy,
   saveAppealRecordNotDeploy: saveAppealRecordNotDeploy,
@@ -85,7 +114,8 @@ let request =  {
   getOrderByCondition: getOrderByCondition,
   getDonateOrderList: getDonateOrderList,
   getTotalStatisticsData: getTotalStatisticsData,
-  undeployAppealRecord: undeployAppealRecord
+  undeployAppealRecord: undeployAppealRecord,
+  getBrandWCPayRequest: getBrandWCPayRequest
 };
 
 export default request;
