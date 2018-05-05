@@ -104,8 +104,8 @@
       .am-list-item .am-input-clear {
         width: 4rem !important;
         height: 4rem !important;
-        background-size: 2rem auto;
-        background-position: 2px 2px;
+        background-size: 2rem auto !important;
+        background-position: 1rem 1rem !important;
       }
       .am-number-keyboard-wrapper.am-number-keyboard-wrapper-hide {
         bottom: -50rem !important;
@@ -124,8 +124,8 @@
       .am-number-keyboard-wrapper table tr .am-number-keyboard-item.keyboard-delete {
         background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221%22%20xmlns%3D%22ht…051l-11-11c-6-6-11.2-11-11.6-11-.3%200-1.4.9-2.4%202z%22%2F%3E%3C%2Fsvg%3E);
         background-size: 5rem 3.7rem !important;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
+        background-position: 50% 50% !important;
+        background-repeat: no-repeat !important;
       }
       .am-list-item .am-input-control .fake-input-container .fake-input-placeholder {
         text-align: left !important;
@@ -167,8 +167,8 @@
         .am-list-item .am-input-clear {
           width: 20px !important;
           height: 20px !important;
-          background-size: 25px auto;
-          background-position: 0px 0px;
+          background-size: 10px auto !important;
+          background-position: 5px 5px !important;
         }
         .am-flexbox .am-flexbox-item {
           -ms-flex: 1;
@@ -257,11 +257,44 @@
 
       window.dpr = dpr;
       window.rem = rem;
+
       if ('addEventListener' in document) {
         document.addEventListener('DOMContentLoaded', function() {
           FastClick.attach(document.body);
         }, false);
       }
+      
+      window.setCookie = function (name, value,days) {
+            var Days = days||365;
+            var minutes = 60;
+            var hour=24;
+            var seconds=60;
+            var exp = new Date();
+            var timeStr='';
+            if(Days!=='browserClose'){
+                exp.setTime(exp.getTime() + Days * hour * minutes * seconds * 1000);
+                timeStr=";expires=" + exp.toGMTString();
+            }
+            document.cookie = name + "=" + encodeURI(value) + timeStr + "; path=/";
+        };
+        window.getCookie = function (name) {
+            //"(^| )"+ name + "=([^;]*)(;|$)")==>开始或者任意开头+name+非‘;’+‘;’或结束
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+
+            if (arr = document.cookie.match(reg))
+                return decodeURI(arr[2]);
+            else
+                return null;
+        };
+        window.delCookie = function (name) {
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            var cval = yuJS.getCookie(name);
+            if (cval != null){
+                document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + "; path=/";
+            }
+        };
+
       if(!window.Promise) {
         document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
       }

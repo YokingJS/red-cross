@@ -29,8 +29,12 @@ class Page extends React.Component{
     let pageUrl = window.location.pathname || '';
     let requestId = (pageUrl.split('/') || []).pop() || '';
     request.getDeployAppealById('?id=' + requestId).then(resS => {
-      console.log(resS);
       if(!resS.errorMsg) {
+        const {
+          projectFollowUp = '', id = '', name = ''
+        } = resS.data || {};
+        window.setCookie('jiushu_data_id', id);
+        window.setCookie('jiushu_data_name', name);
         this.setState({
           baseModel: resS.data || {}
         });
@@ -162,9 +166,10 @@ class Page extends React.Component{
     const {
       projectFollowUp = '', id = '', name = ''
     } = baseModel;
+
     return (
       <div style={styles.fixedButton}>
-        <Link to={'/fillInfo/' + id + '/' + name} style={styles.helpButton}>帮助他</Link>
+        <Link to={'/fillInfo?id=' + id + '&weaker=' + name + '&nothing=232323'} style={styles.helpButton}>帮助他</Link>
         <a href={projectFollowUp} style={styles.followButton}>项目跟进</a>
       </div>
     );

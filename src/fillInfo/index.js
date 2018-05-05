@@ -10,12 +10,12 @@ class FillInfo extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      persionalOrCompany: 1,
-      persionalOrCompanyArray: [{label: '个人', value: 1}, {label: '公司', value: 2}],
+      donateType: 1,
+      donateTypeArray: [{label: '个人', value: 1}, {label: '公司', value: 2}],
       name: '',
       mobile: '',
       money: '',
-      isGetInvoice: 0,
+      isNeedInvoice: 0,
       invoiceHeader: '',
       invoiceName: '',
       invoiceMobile: '',
@@ -23,13 +23,14 @@ class FillInfo extends React.Component {
       remark: '',
       isDisclosure: 0,
       weakerName: '',
-      weakerId: ''
+      appealRecordId: '',
+      openCode: ''
     };
     this.reRender = this.reRender.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
 
-    this.getPersionalOrCompanyLabel = this.getPersionalOrCompanyLabel.bind(this);
-    this.onPickPersionalOrCompany = this.onPickPersionalOrCompany.bind(this);
+    this.getDonateTypeLabel = this.getDonateTypeLabel.bind(this);
+    this.onPickDonateType = this.onPickDonateType.bind(this);
 
     this.getInvoiceState = this.getInvoiceState.bind(this);
     this.onPickInvoice = this.onPickInvoice.bind(this);
@@ -40,14 +41,48 @@ class FillInfo extends React.Component {
   }
 
   componentWillMount() {
-    let pageUrl = window.location.pathname || '';
-    let paramArray = pageUrl.split('/');
-    if (paramArray.length > 2) {
-      this.state.weakerName = decodeURIComponent(paramArray[paramArray.length - 1]);
-      this.state.weakerId = paramArray[paramArray.length - 2];
+    let pathname = window.location.pathname || '';
+    let pathSearch = decodeURI(window.location.search);
+    let redirect_uri = 'http%3a%2f%2fpthh.svell.cn' + encodeURI(pathname + pathSearch);
+    // let paramArray = pathname.split('/');
+    let params = this.getRequest();
+    if ((!params || !params.code) && this.isWeChat()) {
+      window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85e543017679058f&redirect_uri='+ redirect_uri +'&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+    } else if(params && params.code) {
+      this.state.openCode = params.code;
+    }
+    let jiushu_data_id = window.getCookie('jiushu_data_id');
+    let jiushu_data_name = window.getCookie('jiushu_data_name');
+    
+    if (jiushu_data_name && jiushu_data_id) {
+      this.state.weakerName = jiushu_data_name;
+      this.state.appealRecordId = jiushu_data_id;
       this.reRender();
     } else {
       alert('捐赠信息丢失');
+    }
+  }
+
+  getRequest() {  
+    let url = window.location.search; //获取url中"?"符后的字串  
+    let theRequest = new Object();  
+    let strs;
+    if (url.indexOf("?") != -1) {  
+       let str = url.substr(1);  
+       strs = str.split("&");  
+       for(var i = 0; i < strs.length; i ++) {  
+          theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);  
+       }  
+    }  
+    return theRequest;  
+  }  
+
+  isWeChat() {
+    let ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -57,26 +92,26 @@ class FillInfo extends React.Component {
     });
   }
 
-  onPickPersionalOrCompany(value) {
+  onPickDonateType(value) {
     this.setState({
-      persionalOrCompany: value[0] || 1
+      donateType: value[0] || 1
     });
   }
 
-  getPersionalOrCompanyLabel() {
+  getDonateTypeLabel() {
     let ret = '';
-    const { persionalOrCompany = 1, persionalOrCompanyArray =[] } = this.state || {};
-    persionalOrCompanyArray.forEach((item) => {
-      if (item.value === persionalOrCompany) ret = item.label;
+    const { donateType = 1, donateTypeArray =[] } = this.state || {};
+    donateTypeArray.forEach((item) => {
+      if (item.value === donateType) ret = item.label;
     });
     return ret;
   }
 
   getInvoiceState(array) {
     let ret = '';
-    const { isGetInvoice = 0 } = this.state || {};
+    const { isNeedInvoice = 0 } = this.state || {};
     array.forEach((item) => {
-      if (item.value === isGetInvoice) ret = item.label;
+      if (item.value === isNeedInvoice) ret = item.label;
     });
     return ret;
   }
@@ -98,12 +133,55 @@ class FillInfo extends React.Component {
 
   onPickInvoice(value) {
     this.setState({
-        isGetInvoice: value[0] || 0
+      isNeedInvoice: value[0] || 0
     });
   }
 
   onSubmit() {
-    console.log(request.requestWechatCode());
+    if (!this.isWeChat()) {
+      alert('请在微信客户端打开');
+      return;
+    }
+    const {
+      name = '', appealRecordId = '', money = '', mobile = '', donateType = '', isNeedInvoice = '',
+      invoiceHeader = '', invoiceName = '', invoiceMobile = '', invoiceAddress = '', remark = '',
+      isDisclosure = 0, openCode = ''
+    } = this.state || {};
+    if (!name || !mobile || !appealRecordId || !money) {
+      alert('缺少必要信息！');
+      return;
+    }
+    if (isNeedInvoice && (!invoiceHeader || !invoiceName || !invoiceMobile || !invoiceAddress)) {
+      alert('索要发票需填写发票信息！');
+      return;
+    }
+    request.unifiedOrder({
+      name: name,
+      appealRecordId: appealRecordId,
+      money: money * 100,
+      mobile: mobile,
+      donateTime: new Date().getTime(),
+      donateType: donateType,
+      isNeedInvoice: isNeedInvoice,
+      invoiceHeader: invoiceHeader,
+      invoiceName: invoiceName,
+      invoiceMobile: invoiceMobile,
+      invoiceAddress: invoiceAddress,
+      remark: remark,
+      isDisclosure: isDisclosure,
+      openId: openCode
+    }).then(resS => {
+      if (resS.errorMsg) {
+        alert(resS.errorMsg);
+      } 
+      let resData = resS.data || {};
+      request.getBrandWCPayRequest(resData);
+    }, resE => {
+      alert(resE);
+    }).catch(err => {
+      alert(err.message);
+    });
+
   }
 
   onChangeInput(item) {
@@ -125,7 +203,7 @@ class FillInfo extends React.Component {
           this.state.invoiceName = value;
           break;
         case 'invoiceMobile':
-          this.state.age = value;
+          this.state.invoiceMobile = value;
           break;
         case 'invoiceAddress':
           this.state.disease = value;
@@ -154,9 +232,9 @@ class FillInfo extends React.Component {
 
   render() {
     const {
-      persionalOrCompany = 1, persionalOrCompanyArray =[], weakerName = '', name = '', mobile = '',
+      donateType = 1, donateTypeArray =[], weakerName = '', name = '', mobile = '',
       money = '', invoiceHeader = '', invoiceName = '', invoiceMobile = '', invoiceAddress = '',
-      remark = ''
+      remark = '', isNeedInvoice = 0
     } = this.state || {};
     return (
       <div style={styles.fillInfo}>
@@ -183,11 +261,11 @@ class FillInfo extends React.Component {
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>所属:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <Picker
-              data={persionalOrCompanyArray}
+              data={donateTypeArray}
               cols={1}
-              extra={this.getPersionalOrCompanyLabel()}
-              onChange={this.onPickPersionalOrCompany}
-              onOk={this.onPickPersionalOrCompany}
+              extra={this.getDonateTypeLabel()}
+              onChange={this.onPickDonateType}
+              onOk={this.onPickDonateType}
               className="forss"
             >
               <List.Item arrow="down"></List.Item>
@@ -254,7 +332,7 @@ class FillInfo extends React.Component {
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>抬头:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -266,7 +344,7 @@ class FillInfo extends React.Component {
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系人:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -278,7 +356,7 @@ class FillInfo extends React.Component {
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系电话:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -291,7 +369,7 @@ class FillInfo extends React.Component {
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>邮件地址:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -327,7 +405,7 @@ class FillInfo extends React.Component {
         </div>
         <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>捐助信息:</span>
+          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>是否公开:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <Picker
               data={[{label: '公开', value: 1}, {label: '不公开', value: 0}]}
