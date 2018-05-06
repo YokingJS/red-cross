@@ -453,7 +453,7 @@ const styles = {
   },
   boxWithBorder: {
     marginLeft: '2rem',
-    border: '1px solid #999999',
+    border: '1px solid #999',
     borderRadius: '1rem',
     height: '10rem',
     flex: 1,

@@ -47,7 +47,7 @@ class Page extends React.Component{
 
   renderInfo() {
     const baseModel = this.state.baseModel || {};
-    const {
+    let {
       deployDepartment = '', status = '0', gmtModify = '', title = '', targetMoney = '', currentMoney = '',
       donatorNum = '', videoUrl = ''
     } = baseModel;
@@ -83,16 +83,14 @@ class Page extends React.Component{
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>捐款人数</span>
           </div>
         </div>
-        {videoUrl ? <div style={styles.videoBox}>
-          <video
-            // src="http://183.131.48.145/vlive.qqvideo.tc.qq.com/A-C8EZ_x1zxcfuIZFy1WRoPdcCS-b3YiYCkKaL439oSo/o0200qh1oc4.p201.1.mp4?vkey=26267BE905B0312552D86E60575A90E211CD8BCBA98E2737B9BAF92A70EFCC3EB72D9A1611DC61DD77E912B9CC00E8B1CD6E594330F8A39CC4CD48AEB66BC62E22D269F48107BE52BFF07FDE019AED926D7899C9EDE7AABAB35B6D99D7B288DD4EE5A8F13A5FDB03CA709FB7148AB69E010F4D58844B4AF7&platform=10901&sdtfrom=&fmt=shd&level=0"
+        {videoUrl || 1 ? <div style={styles.videoBox}>
+          <iframe
+            frameBorder="0"
+            style={styles.video}
+            controls="controls"
             src={videoUrl}
-            style={styles.video} controls="controls"
-            ref='video'
-            onClick={() => {
-              this.refs.video.play();
-            }}
-          />
+            allowFullScreen
+          ></iframe>
         </div> : null}
       </div>
     );

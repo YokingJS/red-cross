@@ -55,12 +55,12 @@ class ListItem extends React.Component {
         </div>
         <div style={styles.modelItem}>
           <span style={styles.modelItemTitle}>{isWeaker ? '已筹金额' : '捐助金额'}</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney : money}元</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney : money / 100}元</span>
         </div>
         <div style={styles.modelItem}>
           <span style={styles.modelItemTitle}>{isWeaker ? '捐款人数' : '捐助时间'}</span>
           <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>
-            {isWeaker ? donatorNum : (new Date(donateTime)).toLocaleDateString()}人
+            {isWeaker ? donatorNum + '人' : (new Date(gmtModify)).toLocaleDateString()}
           </span>
         </div>
         <div style={styles.modelItem}>
@@ -80,7 +80,7 @@ class ListItem extends React.Component {
             <div style={styles.modelItemButton}>编辑</div>
           </Link> : null
         }
-        {parseInt(status, 10) !== 1 && isWeaker ? null : <div style={styles.modelItem}>
+        {parseInt(status, 10) !== 1 || !isWeaker ? null : <div style={styles.modelItem}>
           <div style={styles.modelItemButton} onClick={this.cancelDeploy}>取消发布</div>
         </div>}
       </div>

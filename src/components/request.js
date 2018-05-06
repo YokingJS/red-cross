@@ -103,6 +103,9 @@ let undeployAppealRecord = (paramUrl) => {
   return getRequest(HOST_PORT + '/undeployAppealRecord' + paramUrl);
 };
 
+let insertBannerImage = (param) => {
+  return postRequest(HOST_PORT + '/insertBannerImage', JSON.stringify(param));
+};
 let request =  {
   getInitInformation: getInitInformation,
   unifiedOrder: unifiedOrder,
@@ -115,7 +118,8 @@ let request =  {
   getDonateOrderList: getDonateOrderList,
   getTotalStatisticsData: getTotalStatisticsData,
   undeployAppealRecord: undeployAppealRecord,
-  getBrandWCPayRequest: getBrandWCPayRequest
+  getBrandWCPayRequest: getBrandWCPayRequest,
+  insertBannerImage: insertBannerImage
 };
 
 export default request;

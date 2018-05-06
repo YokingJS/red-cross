@@ -56,7 +56,14 @@ class Page extends React.Component {
     this.setState({
       bannerFiles,
     });
-    console.log(bannerFiles[0]);
+    let imageData = (bannerFiles[0] || {}).url;
+    if (imageData) {
+      request.insertBannerImage({
+        imageData: imageData
+      }).then(resS => {
+        console.log(resS);
+      });
+    }
   }
 
   onDownload() {
