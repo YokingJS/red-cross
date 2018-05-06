@@ -175,11 +175,13 @@ class FillInfo extends React.Component {
         alert(resS.errorMsg);
       } 
       let resData = resS.data || {};
-      request.getBrandWCPayRequest(resData);
+      request.getBrandWCPayRequest(resData, () => {
+        window.location.href = '//pthh.svell.cn/donateResult';
+      });
     }, resE => {
-      alert(resE);
+      alert('请刷新页面再试试吧~');
     }).catch(err => {
-      alert(err.message);
+      alert('微信出错啦~' + err.message);
     });
 
   }
