@@ -90,8 +90,13 @@
       .am-picker-col-indicator {
         height: 8rem !important;
         top: 102px;
-        border-top: 1px solid #333 !important;
-        border-bottom: 1px solid #333 !important;
+        border: none !important;
+      }
+      .am-picker-col-indicator::before {
+        background-color: #333 !important;
+      }
+      .am-picker-col-indicator::after {
+        background-color: #333 !important;
       }
       .am-list-item .am-input-control input, .am-list-item .am-input-control .fake-input-container .fake-input,
       .am-list-item .am-input-control, .am-list-item .am-input-control .fake-input-container {
@@ -102,19 +107,19 @@
         height: 4.5rem !important;
       }
       .am-list-item .am-input-clear {
-        width: 4rem !important;
-        height: 4rem !important;
-        background-size: 2rem auto !important;
-        background-position: 1rem 1rem !important;
+        width: 6rem !important;
+        height: 6rem !important;
+        background-size: 6rem auto !important;
+        background-position: 0.6rem 0.6rem !important;
       }
       .am-number-keyboard-wrapper.am-number-keyboard-wrapper-hide {
-        bottom: -50rem !important;
+        bottom: -70rem !important;
       }
       .am-number-keyboard-wrapper {
-        height: 40rem !important;
+        height: 60rem !important;
       }
       .am-number-keyboard-wrapper table tr .am-number-keyboard-item {
-        height: 10rem !important;
+        height: 15rem !important;
         font-size: 5rem !important;
       }
       .am-number-keyboard-wrapper table tr .am-number-keyboard-item.keyboard-hide {
@@ -263,7 +268,7 @@
           FastClick.attach(document.body);
         }, false);
       }
-      
+
       window.setCookie = function (name, value,days) {
             var Days = days||365;
             var minutes = 60;
