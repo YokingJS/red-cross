@@ -31,10 +31,11 @@ class Page extends React.Component{
     request.getDeployAppealById('?id=' + requestId).then(resS => {
       if(!resS.errorMsg) {
         const {
-          projectFollowUp = '', id = '', name = ''
+          projectFollowUp = '', id = '', name = '', title = ''
         } = resS.data || {};
         window.setCookie('jiushu_data_id', id);
         window.setCookie('jiushu_data_name', name);
+        window.setCookie('jiushu_data_appealRecordTitle', title);
         this.setState({
           baseModel: resS.data || {}
         });

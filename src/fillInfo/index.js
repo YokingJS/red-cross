@@ -155,6 +155,8 @@ class FillInfo extends React.Component {
       alert('索要发票需填写发票信息！');
       return;
     }
+    let appealRecordTitle = window.getCookie('jiushu_data_appealRecordTitle');
+
     request.unifiedOrder({
       name: name,
       appealRecordId: appealRecordId,
@@ -169,14 +171,19 @@ class FillInfo extends React.Component {
       invoiceAddress: invoiceAddress,
       remark: remark,
       isDisclosure: isDisclosure,
+      appealRecordTitle: appealRecordTitle,
       openId: openCode
     }).then(resS => {
       if (resS.errorMsg) {
         alert(resS.errorMsg);
+        return;
       } 
       let resData = resS.data || {};
+      let orderid = resData.orderId;
       request.getBrandWCPayRequest(resData, () => {
-        window.location.href = '//pthh.svell.cn/donateResult';
+        setTimeout(() => {
+          window.location.href = '//pthh.svell.cn/donateResult?orderid=' + orderid;
+        }, 700);
       });
     }, resE => {
       alert('请刷新页面再试试吧~');
