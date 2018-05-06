@@ -55,7 +55,7 @@ class ListItem extends React.Component {
         </div>
         <div style={styles.modelItem}>
           <span style={styles.modelItemTitle}>{isWeaker ? '已筹金额' : '捐助金额'}</span>
-          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney : money / 100}元</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney / 100 : money / 100}元</span>
         </div>
         <div style={styles.modelItem}>
           <span style={styles.modelItemTitle}>{isWeaker ? '捐款人数' : '捐助时间'}</span>

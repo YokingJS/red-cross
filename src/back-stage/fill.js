@@ -54,21 +54,43 @@ class Page extends React.Component {
   }
 
   onSubmit(save) {
-    const { id = '', title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
+    let { id = '', title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
       sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
       currentMoney = '', donatorNum = '' , projectFollowUp = '', status = '0'
     } = this.state || {};
-    if (title && familyDesc && patientDesc && name && sex && age && disease && mobile && targetMoney && deployDepartment
+
+    if (sex === '男' || sex === 0 || sex === '0') {
+      sex = 0;
+    } else if (sex === '女' || sex === 1 || sex === '1') {
+      sex = 1;
+    } else {
+      alert('请正确填写性别~');
+      return;
+    }  
+
+    if (title && familyDesc && patientDesc && name && age && disease && mobile && targetMoney && deployDepartment
     && currentMoney && donatorNum) {
       if (save === 'save') {
         request.saveAppealRecordNotDeploy({
           id, title, familyDesc, patientDesc, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
           currentMoney, donatorNum, projectFollowUp, status
+        }).then(resS => {
+          if (resS.errorMsg) {
+            alert(resS.errorMsg);
+          } else {
+            alert('保存成功~');
+          }
         });
       } else {
         request.saveAppealRecordDeploy({
           id, title, familyDesc, patientDesc, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
           currentMoney, donatorNum, projectFollowUp
+        }).then(resS => {
+          if (resS.errorMsg) {
+            alert(resS.errorMsg);
+          } else {
+            alert('发布成功~');
+          }
         });
       }
     } else {
@@ -111,13 +133,13 @@ class Page extends React.Component {
           this.state.mobile = value;
           break;
         case 'targetMoney':
-          this.state.targetMoney = value;
+          this.state.targetMoney = value * 100;
           break;
         case 'deployDepartment':
           this.state.deployDepartment = value;
           break;
         case 'currentMoney':
-          this.state.currentMoney = value;
+          this.state.currentMoney = value * 100;
           break;
         case 'donatorNum':
           this.state.donatorNum = value;
@@ -145,10 +167,12 @@ class Page extends React.Component {
   }
   
   render() {
-    const { donorFiles = [], title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
+    let { donorFiles = [], title = '', familyDesc = '', patientDesc = '', imageUrl = '', videoUrl = '', name = '',
       sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
       currentMoney = '', donatorNum = '' , projectFollowUp = ''
     } = this.state || {};
+    if (sex === 0 || sex === '0') sex = '男';
+    if (sex === 1 || sex === '1') sex = '女';    
     const MARGINTOP = '10px';
     const TITLEWIDTH = '100px';
     const IMAGEWIDTH = '90px';
@@ -276,7 +300,7 @@ class Page extends React.Component {
             <InputItem
               clear
               type="targetMoney"
-              value={targetMoney}
+              value={targetMoney / 100}
               onChange={this.onChangeInput('targetMoney')}
             ></InputItem>
           </div>
@@ -288,7 +312,7 @@ class Page extends React.Component {
             <InputItem
               clear
               type="number"
-              value={currentMoney}
+              value={currentMoney / 100}
               onChange={this.onChangeInput('currentMoney')}
             ></InputItem>
           </div>

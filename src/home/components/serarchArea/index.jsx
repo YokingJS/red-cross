@@ -33,12 +33,16 @@ class SearchArea extends React.Component {
     let name = value.substring(0, value.length - 4);
     let mobile = value.substring(value.length - 4, value.length);
     request.getOrderByCondition('?name=' + name + '&mobile=' + mobile).then(resS => {
-      console.log(resS);
       if (!resS.errorMsg) {
-        this.setState({
-          donateInfoList: resS.data || []
-        });
-        this.onShowModal();
+        if(resS.data && resS.data.length > 0) {
+          this.setState({
+            donateInfoList: resS.data || []
+          });
+          this.onShowModal();
+        } else {
+          alert('查无信息~');
+        }
+        
       }
     });
   }
@@ -62,7 +66,7 @@ class SearchArea extends React.Component {
       return (
         <div>
           <div style={styles.modalContext} >姓名：{name}</div>
-          <div style={styles.modalContext} >金额：{money}</div>
+          <div style={styles.modalContext} >金额：{money / 100}</div>
           <div style={styles.modalContext} >手机：{mobile}</div>
           <div style={styles.modalContext} >最后捐助时间：{(new Date(gmtModify)).toLocaleDateString()}</div>
         </div>
@@ -88,7 +92,7 @@ class SearchArea extends React.Component {
             data-seed="logId"
             autoHeight
             ref="search"
-            style={{paddingRight: '1rem'}}
+            style={{paddingRight: '.1rem'}}
           />
         </div>
         <Modal
@@ -120,55 +124,55 @@ const styles = {
   },
   searchArea: {
     display: 'flex',
-    marginTop: '2.5rem',
-    height: '18rem',
-    padding: '4rem',
+    marginTop: '.25rem',
+    height: '1.8rem',
+    padding: '.4rem',
     backgroundColor: '#ffffff'
   },
   searchTitle: {
-    width: '32rem',
-    height: '10rem',
-    paddingTop: '1rem',
-    lineHeight: '8rem',
-    fontSize: '5.2rem',
+    width: '3.2rem',
+    height: '1rem',
+    paddingTop: '.1rem',
+    lineHeight: '.8rem',
+    fontSize: '.52rem',
     color: '#333333'
   },
   inputBox: {
     flex: 1,
-    height: '10rem',
-    marginLeft: '4rem',
+    height: '1rem',
+    marginLeft: '.4rem',
     border: '1px solid #999999',
-    borderRadius: '5rem',
+    borderRadius: '.5rem',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   searchButton: {
-    width: '5rem',
-    height: '5rem',
-    marginLeft: '4rem'
+    width: '.5rem',
+    height: '.5rem',
+    marginLeft: '.4rem'
   },
   modalContent: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '30rem',
+    minHeight: '3rem',
     overflow: 'scroll'
   },
   modalTitle: {
-    height: '8rem',
+    height: '.8rem',
     textAlign: 'left',
-    fontSize: '5rem',
+    fontSize: '.5rem',
     color: '#333333',
-    lineHeight: '8rem'
+    lineHeight: '.8rem'
   },
   modalContext: {
-    width: '90rem',
-    maxHeight: '80rem',
+    width: '9rem',
+    maxHeight: '8rem',
     textAlign: 'left',
-    fontSize: '3.6rem',
+    fontSize: '.36rem',
     color: '#666666',
-    lineHeight: '4.5rem',
+    lineHeight: '.45rem',
     wordBreak: 'break-all'
   }
 };

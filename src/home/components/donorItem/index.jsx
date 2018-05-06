@@ -45,14 +45,14 @@ class DonorItem extends React.Component {
           style={styles.donorPhoto}
         />
         <div style={styles.donorInfo}>
-          <span style={{...styles.donorInfoText, maxWidth: '40rem'}}>姓名: {name}</span>
-          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>性别: {sex ? '男' : '女'}</span>
-          <span style={{...styles.donorInfoText, maxWidth: '30rem'}}>年龄: {age}岁</span>
+          <span style={{...styles.donorInfoText, maxWidth: '4rem'}}>姓名: {name}</span>
+          <span style={{...styles.donorInfoText, maxWidth: '3rem'}}>性别: {(sex === 0 || sex === '0') ? '男' : '女'}</span>
+          <span style={{...styles.donorInfoText, maxWidth: '3rem'}}>年龄: {age}岁</span>
         </div>
         <div style={styles.donorInfo}>
-          <span style={{...styles.donorInfoText, maxWidth: '80rem'}}>病种: {disease}</span>
+          <span style={{...styles.donorInfoText, maxWidth: '8rem'}}>病种: {disease}</span>
         </div>
-        <div style={{...styles.donateInfo, padding: '0 4rem'}}>
+        <div style={{...styles.donateInfo, padding: '0 .4rem'}}>
           <div style={styles.donateInfoItem}>
             <img
               src="https://gw.alicdn.com/tfs/TB1Iy7ZoKuSBuNjy1XcXXcYjFXa-40-50.png"
@@ -60,7 +60,7 @@ class DonorItem extends React.Component {
               style={styles.donateInfoIcon}
             />
             <span style={styles.donateInfoItemText}>
-              目标<span style={styles.donateInfoBlueText}>{targetMoney}</span>元
+              目标<span style={styles.donateInfoBlueText}>{targetMoney / 100}</span>元
             </span>
           </div>
           <div style={styles.donateInfoItem}>
@@ -70,7 +70,7 @@ class DonorItem extends React.Component {
               style={styles.donateInfoIcon}
             />
             <span style={styles.donateInfoItemText}>
-              已筹<span style={styles.donateInfoBlueText}>{currentMoney}</span>元
+              已筹<span style={styles.donateInfoBlueText}>{currentMoney / 100}</span>元
             </span>
           </div>
           <div style={styles.donateInfoItem}>
@@ -104,66 +104,66 @@ const styles = {
     backgroundColor: '#ffffff'
   },
   redCrossInfo: {
-    padding: '0 4rem',
-    height: '14rem',
+    padding: '0 .4rem',
+    height: '1.4rem',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   redCrossLogo: {
-    width: '5rem',
-    height: '5rem'
+    width: '.5rem',
+    height: '.5rem'
   },
   redCrossName: {
     flex: 1,
-    height: '5rem',
-    marginLeft: '3rem',
-    lineHeight: '4.2rem',
-    paddingTop: '0.4rem',
-    fontSize: '3.6rem',
+    height: '.5rem',
+    marginLeft: '.3rem',
+    lineHeight: '.42rem',
+    paddingTop: '0.04rem',
+    fontSize: '.36rem',
     color: '#999999'
   },
   helpBrief: {
     flex: 1,
-    height: '9rem',
-    padding: '0.4rem 4rem',
-    lineHeight: '8.2rem',
-    fontSize: '5rem',
+    height: '.9rem',
+    padding: '0.04rem .4rem',
+    lineHeight: '.82rem',
+    fontSize: '.5rem',
     color: '#009966'
   },
   donorCondition: {
     flex: 1,
-    padding: '0 4rem',
-    marginTop: '1rem',
-    lineHeight: '4.5rem',
-    fontSize: '3.6rem',
+    padding: '0 .4rem',
+    marginTop: '.1rem',
+    lineHeight: '.45rem',
+    fontSize: '.36rem',
     color: '#999999'
   },
   donorPhoto: {
-    margin: '0 4rem',
+    margin: '0 .4rem',
     flex: 1,
-    height: '50rem',
-    marginTop: '4.5rem'
+    height: '5rem',
+    marginTop: '.45rem'
   },
   donorInfo: {
     flex: 1,
-    marginTop: '4.5rem',
-    padding: '0 4rem',
+    marginTop: '.45rem',
+    padding: '0 .4rem',
     display: 'flex',
     flexDirection: 'row'
   },
   donorInfoText: {
-    height: '6rem',
-    paddingRight: '4rem',
-    lineHeight: '6rem',
-    fontSize: '4.8rem',
+    height: '.6rem',
+    paddingRight: '.4rem',
+    lineHeight: '.6rem',
+    fontSize: '.48rem',
     color: '#333333',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap'
   },
   donateInfo: {
-    marginTop: '4.5rem',
+    marginTop: '.45rem',
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
@@ -171,30 +171,30 @@ const styles = {
   },
   donateInfoItem: {
     flex: 1,
-    height: '9rem',
+    height: '.9rem',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   donateInfoIcon: {
-    width: '4rem',
-    height: '5rem'
+    width: '.4rem',
+    height: '.5rem'
   },
   donateInfoIcon2: {
-    width: '5rem',
-    height: '4rem'
+    width: '.5rem',
+    height: '.4rem'
   },
   donateInfoItemText: {
     flex: 1,
-    marginLeft: '1rem',
-    lineHeight: '8rem',
-    fontSize: '3.6rem',
+    marginLeft: '.1rem',
+    lineHeight: '.8rem',
+    fontSize: '.36rem',
     color: '#333333'
   },
   donateInfoBlueText: {
-    maxWidth: '3rem',
-    lineHeight: '8rem',
-    fontSize: '3.6rem',
+    maxWidth: '.3rem',
+    lineHeight: '.8rem',
+    fontSize: '.36rem',
     color: '#009966'
   }
 };

@@ -69,26 +69,26 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    height: '35rem',
-    padding: '3rem 0rem',
+    height: '3.5rem',
+    padding: '.3rem 0rem',
     backgroundImage: 'linear-gradient(to bottom, #E0FAE4, #FFFFFF)',
   },
   projectTitle: {
     display: 'flex',
-    padding: '0 4rem'
+    padding: '0 .4rem'
   },
   projectName: {
-    width: '80rem',
-    height: '6rem',
-    marginLeft: '2rem',
-    lineHeight: '5.6rem',
-    paddingTop: '0.2rem',
-    fontSize: '5.2rem',
+    width: '8rem',
+    height: '.6rem',
+    marginLeft: '.2rem',
+    lineHeight: '.56rem',
+    paddingTop: '0.02rem',
+    fontSize: '.52rem',
     color: '#009966'
   },
   redCrossLogo: {
-    width: '6rem',
-    height: '6rem'
+    width: '.6rem',
+    height: '.6rem'
   },
   buttonBox: {
     display: 'flex',

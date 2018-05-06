@@ -45,6 +45,6 @@ export default Banner;
 const styles = {
   bannerSize: {
     width: '100%',
-    height: '50rem'
+    height: '5rem'
   }
 };

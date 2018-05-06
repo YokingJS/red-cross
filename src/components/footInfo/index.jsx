@@ -27,20 +27,20 @@ export default FootInfo;
 const styles = {
   footInfo: {
     flex: 1,
-    height: '45rem',
+    height: '4.5rem',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
   redCrossLogo: {
-    width: '8rem',
-    height: '8rem'
+    width: '.8rem',
+    height: '.8rem'
   },
   footCompany: {
-    lineHeight: '5rem',
-    fontSize: '4rem',
+    lineHeight: '.5rem',
+    fontSize: '.4rem',
     color: '#999',
-    marginTop: '2rem'
+    marginTop: '.2rem'
   }
 };
