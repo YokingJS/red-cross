@@ -70,12 +70,12 @@ class Page extends React.Component{
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>{title}</span>
         <div style={styles.donateCountInfo}>
           <div style={styles.donateCountItem}>
-            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{targetMoney}元</span>
+            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{targetMoney / 100}元</span>
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>目标金额</span>
           </div>
           <div style={styles.splitLine}/>
           <div style={styles.donateCountItem}>
-            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{currentMoney}元</span>
+            <span style={{...styles.donateCountItemTopText, ...styles.textOverflow}}>{currentMoney / 100}元</span>
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>已筹金额</span>
           </div>
           <div style={styles.splitLine}/>
@@ -131,30 +131,22 @@ class Page extends React.Component{
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、联系方式</span>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>求助人:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>{name}</span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{name}</span>
         </div>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>{mobile}</span>
-          {/* <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span> */}
+          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{mobile}</span>
+          {/* <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}> / 13333333333</span> */}
         </div>
-        {/* <div style={{...styles.rowLine, marginTop: '10rem'}}>
-          <span style={styles.largeText}>长风街道金沙居委会卫生干部:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '2rem'}}>肖春红</span>
-        </div>
-        <div style={styles.rowLine}>
-          <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>13333333333</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 13333333333</span>
-        </div> */}
-        <div style={{...styles.rowLine, marginTop: '10rem'}}>
+
+        <div style={{...styles.rowLine, marginTop: '1rem'}}>
           <span style={styles.largeText}>普陀区红十字会联系人:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '2rem'}}></span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '.2rem'}}></span>
         </div>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '40rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}>62441118-1108</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '2rem'}}> / 1109</span>
+          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>62441118-1108</span>
+          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}> / 1109</span>
         </div>
       </div>
     );
@@ -182,7 +174,7 @@ class Page extends React.Component{
         {this.renderContactWay()}
         <FootInfo />
         {this.renderButton()}
-        <div style={{height: '19rem'}}/>
+        <div style={{height: '1.9rem'}}/>
       </div>
     );
   }
@@ -199,25 +191,25 @@ const styles = {
   rowLine: {
     flex: 1,
     display: 'flex',
-    padding: '0rem 4rem',
+    padding: '0rem .4rem',
     flexDirection: 'row'
   },
   normalText: {
     flex: 1,
-    padding: '0 4rem',
-    lineHeight: '4.5rem',
-    fontSize: '3.6rem',
+    padding: '0 .4rem',
+    lineHeight: '.45rem',
+    fontSize: '.36rem',
     color: '#999999'
   },
   largeText: {
-    lineHeight: '8rem',
-    fontSize: '4.8rem',
+    lineHeight: '.8rem',
+    fontSize: '.48rem',
     color: '#333333'
   },
   normalImage: {
     flex: 1,
-    margin: '4.5rem 4rem',
-    height: '50rem'
+    margin: '.45rem .4rem',
+    height: '5rem'
   },
   page: {
     width: '100%',
@@ -233,38 +225,38 @@ const styles = {
     flexDirection: 'column'
   },
   redCrossInfo: {
-    padding: '6rem 4rem',
+    padding: '.6rem .4rem',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
   },
   redCrossLogo: {
-    width: '5rem',
-    height: '5rem'
+    width: '.5rem',
+    height: '.5rem'
   },
   redCrossName: {
     flex: 1,
-    height: '5rem',
-    marginLeft: '3rem',
-    lineHeight: '4.2rem',
-    paddingTop: '0.4rem',
-    fontSize: '3.6rem',
+    height: '.5rem',
+    marginLeft: '.3rem',
+    lineHeight: '.42rem',
+    paddingTop: '0.04rem',
+    fontSize: '.36rem',
     color: '#999999'
   },
   helpBrief: {
     flex: 1,
-    height: '9rem',
-    padding: '0.4rem 4rem',
-    lineHeight: '8.2rem',
-    fontSize: '5rem',
+    height: '.9rem',
+    padding: '0.04rem .4rem',
+    lineHeight: '.82rem',
+    fontSize: '.5rem',
     color: '#009966'
   },
   donateCountInfo: {
     flex: 1,
     display: 'flex',
-    marginTop: '3.5rem',
+    marginTop: '.35rem',
     flexDirection: 'row',
-    height: '20rem',
+    height: '2rem',
     borderTop: '1px solid #999999',
     borderBottom: '1px solid #999999'    
   },
@@ -276,25 +268,25 @@ const styles = {
     alignItems: 'center'
   },
   donateCountItemTopText: {
-    lineHeight: '6rem',
-    fontSize: '4.8rem',
+    lineHeight: '.6rem',
+    fontSize: '.48rem',
     color: '#ff3333'
   },
   donateCountItemBottomText: {
-    lineHeight: '5rem',
-    fontSize: '3.6rem',
+    lineHeight: '.5rem',
+    fontSize: '.36rem',
     color: '#999999'
   },
   splitLine: {
     width: '1px',
-    height: '12rem',
-    marginTop: '4rem',
+    height: '1.2rem',
+    marginTop: '.4rem',
     backgroundColor: '#999999'
   },
   videoBox: {
     flex: 1,
-    height: '65rem',
-    padding: '5.5rem 4rem'
+    height: '6.5rem',
+    padding: '.55rem .4rem'
   },
   video: {
     width: '100%',
@@ -302,37 +294,37 @@ const styles = {
   },
   fixedButton: {
     position: 'fixed',
-    width: '108rem',
-    padding: '0rem 4rem',
+    width: '10.8rem',
+    padding: '0rem .4rem',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '16rem',
+    height: '1.6rem',
     left: 0,
     bottom: 0,
     backgroundColor: '#f5f5f5'
   },
   helpButton: {
-    width: '64.5rem',
-    height: '12rem',
-    lineHeight: '12rem',
-    fontSize: '6rem',
+    width: '6.45rem',
+    height: '1.2rem',
+    lineHeight: '1.2rem',
+    fontSize: '.6rem',
     color: '#fff',
     backgroundColor: '#ff3332',
     textAlign: 'center',
-    borderRadius: '6rem'
+    borderRadius: '.6rem'
   },
   followButton: {
     flex: 1,
-    height: '12rem',
-    lineHeight: '12rem',
-    marginLeft: '3rem',
-    fontSize: '5.5rem',
+    height: '1.2rem',
+    lineHeight: '1.2rem',
+    marginLeft: '.3rem',
+    fontSize: '.55rem',
     color: '#fff',
     backgroundColor: '#cbcccd',
     textAlign: 'center',
-    borderRadius: '6rem'
+    borderRadius: '.6rem'
   }
 };
 

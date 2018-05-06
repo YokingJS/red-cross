@@ -89,16 +89,16 @@ const styles = {
     alignItems: 'center'
   },
   buttonStyle: {
-    width: '13rem',
-    height: '13rem',
-    marginTop: '4rem'
+    width: '1.3rem',
+    height: '1.3rem',
+    marginTop: '.4rem'
   },
   buttonName: {
-    width: '24rem',
-    height: '4.8rem',
-    paddingTop: '0.2rem',
-    lineHeight: '4.4rem',
-    fontSize: '4rem',
+    width: '2.4rem',
+    height: '.48rem',
+    paddingTop: '0.02rem',
+    lineHeight: '.44rem',
+    fontSize: '.4rem',
     color: '#333333',
     textAlign: 'center'
   },
@@ -106,23 +106,23 @@ const styles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '30rem',
+    minHeight: '3rem',
     overflow: 'scroll'
   },
   modalTitle: {
-    height: '8rem',
+    height: '.8rem',
     textAlign: 'left',
-    fontSize: '5rem',
+    fontSize: '.5rem',
     color: '#333333',
-    lineHeight: '8rem'
+    lineHeight: '.8rem'
   },
   modalContext: {
-    width: '90rem',
-    maxHeight: '80rem',
+    width: '9rem',
+    maxHeight: '8rem',
     textAlign: 'left',
-    fontSize: '3.6rem',
+    fontSize: '.36rem',
     color: '#666666',
-    lineHeight: '4.5rem',
+    lineHeight: '.45rem',
     wordBreak: 'break-all'
   }
 };

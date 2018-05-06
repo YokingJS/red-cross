@@ -142,7 +142,7 @@ class FillInfo extends React.Component {
       alert('请在微信客户端打开');
       return;
     }
-    const {
+    let {
       name = '', appealRecordId = '', money = '', mobile = '', donateType = '', isNeedInvoice = '',
       invoiceHeader = '', invoiceName = '', invoiceMobile = '', invoiceAddress = '', remark = '',
       isDisclosure = 0, openCode = ''
@@ -247,27 +247,27 @@ class FillInfo extends React.Component {
     } = this.state || {};
     return (
       <div style={styles.fillInfo}>
-        <div style={{...styles.rowLine, padding: '8rem 4rem'}}>
+        <div style={{...styles.rowLine, padding: '.8rem .4rem'}}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
             alt=""
             style={styles.noticeImg}
           />
-          <span style={{...styles.largeText, color: '#ff3322', marginLeft: '2rem'}}>感谢您的爱心支持，请填写以下捐赠信息</span>
+          <span style={{...styles.largeText, color: '#ff3322', marginLeft: '.2rem'}}>感谢您的爱心支持，请填写以下捐赠信息</span>
         </div>
         <div style={styles.rowLine}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>捐赠时间:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>捐赠时间:</span>
           <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>{(new Date()).toLocaleDateString()}</span>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>捐赠意向:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>捐赠意向:</span>
           <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>{weakerName}</span>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>所属:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>所属:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <Picker
               data={donateTypeArray}
@@ -281,9 +281,9 @@ class FillInfo extends React.Component {
             </Picker>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>姓名/名称:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>姓名/名称:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
                 clear
@@ -293,9 +293,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>手机号:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>手机号:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
                 clear
@@ -306,14 +306,14 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>币种:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>币种:</span>
           <span style={{...styles.largeText, ...styles.boxNoBorder, ...styles.textOverflow}}>人民币</span>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>金额(元):</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>金额(元):</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
                 clear
@@ -324,9 +324,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>开具发票:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>开具发票:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <Picker
               data={[{label: '是', value: 1}, {label: '否', value: 0}]}
@@ -340,9 +340,9 @@ class FillInfo extends React.Component {
             </Picker>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>抬头:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>抬头:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -352,9 +352,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系人:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>联系人:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -364,9 +364,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>联系电话:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>联系电话:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -377,9 +377,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: isNeedInvoice ? '#ff3322' : 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>邮件地址:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>邮件地址:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -389,9 +389,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>邮编:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>邮编:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -400,9 +400,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>备注:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>备注:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
@@ -412,9 +412,9 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '3.5rem'}}>
+        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: '28rem', textAlign: 'right'}}>是否公开:</span>
+          <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>是否公开:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <Picker
               data={[{label: '公开', value: 1}, {label: '不公开', value: 0}]}
@@ -430,7 +430,7 @@ class FillInfo extends React.Component {
         </div>
         <FootInfo />
         {this.renderButton()}
-        <div style={{height: '19rem'}}/>
+        <div style={{height: '1.9rem'}}/>
       </div>
     );
   }
@@ -452,60 +452,60 @@ const styles = {
   },
   rowLine: {
     flex: 1,
-    height: '10rem',
+    height: '1rem',
     display: 'flex',
     flexDirection: 'row',
-    padding: '0 4rem',
+    padding: '0 .4rem',
     alignItems: 'center'
   },
   boxWithBorder: {
-    marginLeft: '2rem',
+    marginLeft: '.2rem',
     border: '1px solid #999',
-    borderRadius: '1rem',
-    height: '10rem',
+    borderRadius: '.1rem',
+    height: '1rem',
     flex: 1,
-    padding: '0 2rem',
+    padding: '0 .2rem',
     display: 'flex',
     alignItems: 'center'
   },
   boxNoBorder: {
-    marginLeft: '2rem',
-    height: '10rem',
+    marginLeft: '.2rem',
+    height: '1rem',
     flex: 1,
-    padding: '0 2rem',
+    padding: '0 .2rem',
     display: 'flex',
     alignItems: 'center'
   },
   largeText: {
-    lineHeight: '5rem',
-    fontSize: '4.8rem',
+    lineHeight: '.5rem',
+    fontSize: '.48rem',
     color: '#666666'
   },
   noticeImg: {
-    width: '5rem',
-    height: '5rem'
+    width: '.5rem',
+    height: '.5rem'
   },
   fixedButton: {
     position: 'fixed',
-    width: '108rem',
-    padding: '0rem 4rem',
+    width: '10.8rem',
+    padding: '0rem .4rem',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '16rem',
+    height: '1.6rem',
     left: 0,
     bottom: 0,
     backgroundColor: '#f5f5f5'
   },
   helpButton: {
-    width: '90rem',
-    height: '12rem',
-    lineHeight: '12rem',
-    fontSize: '6rem',
+    width: '9rem',
+    height: '1.2rem',
+    lineHeight: '1.2rem',
+    fontSize: '.6rem',
     color: '#fff',
     backgroundColor: '#fd6463',
     textAlign: 'center',
-    borderRadius: '6rem'
+    borderRadius: '.6rem'
   }
 };

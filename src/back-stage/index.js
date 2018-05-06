@@ -175,7 +175,7 @@ class Page extends React.Component {
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>捐赠总金额:</span>
-          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{totalMoney}元</span>
+          <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{totalMoney / 100}元</span>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
