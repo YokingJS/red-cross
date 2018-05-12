@@ -61,7 +61,11 @@ class Page extends React.Component {
       request.insertBannerImage({
         imageData: imageData
       }).then(resS => {
-        console.log(resS);
+        if (resS.errorMsg) {
+          alert('上传失败，请重试');
+        } else {
+          alert('上传banner成功');
+        }
       });
     }
   }
