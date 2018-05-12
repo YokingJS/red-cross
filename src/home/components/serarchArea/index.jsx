@@ -64,7 +64,7 @@ class SearchArea extends React.Component {
         name = '', money = '', mobile = '', gmtModify = ''
       } = item;
       return (
-        <div>
+        <div key={index}>
           <div style={styles.modalContext} >姓名：{name}</div>
           <div style={styles.modalContext} >金额：{money / 100}</div>
           <div style={styles.modalContext} >手机：{mobile}</div>
