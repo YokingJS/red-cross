@@ -1,10 +1,13 @@
 
 import React from 'react';
-import { List, InputItem, ImagePicker } from 'antd-mobile';
-import XLSX from 'xlsx';
+import { ImagePicker } from 'antd-mobile';
 
 import request from '../components/request';
 import ListItem from './components/listItem'
+
+const MARGINTOP = '10px';
+const TITLEWIDTH = '100px';
+const IMAGEWIDTH = '100px';
 
 class Page extends React.Component {
   constructor(props, context) {
@@ -14,11 +17,15 @@ class Page extends React.Component {
       donorBaseModel: [],
       bannerFiles: [],
       totalMoney: 0,
-      totalDonator: 0
+      totalDonator: 0,
+      bannerList: []
     };
     this.reRender = this.reRender.bind(this);
     this.onBannerChange = this.onBannerChange.bind(this);
     this.onDownload = this.onDownload.bind(this);
+    this.renderBannerList = this.renderBannerList.bind(this);
+    this.onDeleteWeaker = this.onDeleteWeaker.bind(this);
+    this.onSetTop = this.onSetTop.bind(this);
   }
   
   reRender() {
@@ -46,10 +53,29 @@ class Page extends React.Component {
       if (!res.errorMsg) {
         this.state.totalDonator = (res.data || []).totalDonator || 0;
         this.state.totalMoney = (res.data || []).totalMoney || 0;
+        this.state.bannerList = (res.data || []).bannerList || [];
       }
       this.reRender();
     });
 
+  }
+
+  deleteBanner(index) {
+    return () => {
+      let bannerList = this.state.bannerList
+      if (bannerList[index] && bannerList[index].id) request.deleteBannerImageById('?id=' + bannerList[index].id).then(resS => {
+        if (!resS.errorMsg) {
+          bannerList.splice(index, 1);
+          this.setState({
+            bannerList: bannerList
+          });
+        } else {
+          alert(resS.errorMsg);
+        }
+      }, resE => {
+        alert('删除失败,稍后再试');
+      });
+    };
   }
 
   onBannerChange(bannerFiles, type, index) {
@@ -64,13 +90,68 @@ class Page extends React.Component {
         if (resS.errorMsg) {
           alert('上传失败，请重试');
         } else {
-          alert('上传banner成功');
+          window.location.href = window.location.href;
         }
       });
     }
   }
 
+  onDeleteWeaker(id, index) {
+    request.deleteAppealRecordById('?id=' + id).then(resS => {
+      if(!resS.errorMsg) {
+        const { weakerBaseModel = [] } = this.state || {};
+        weakerBaseModel.splice(index, 1);
+        this.setState({
+          weakerBaseModel: weakerBaseModel
+        });
+      } else {
+        alert(resS.errorMsg);
+      }
+    }, resE => {
+      alert('删除失败，请稍后再试');
+    });
+  }
+
+  onSetTop(id, index, isTop) {
+    if (isTop) {
+      request.unsetAppealRecordTop('?id=' + id).then(resS => {
+        if(!resS.errorMsg) {
+          const { weakerBaseModel = [] } = this.state || {};
+          let targetItem = weakerBaseModel[index];
+          targetItem.top = false;
+          weakerBaseModel.splice(index, 1);
+          weakerBaseModel.push(targetItem);
+          this.setState({
+            weakerBaseModel: weakerBaseModel
+          });
+        } else {
+          alert(resS.errorMsg);
+        }
+      }, resE => {
+        alert('取消失败，请稍后再试');
+      });
+    } else {
+      request.setAppealRecordTop('?id=' + id).then(resS => {
+        if(!resS.errorMsg) {
+          const { weakerBaseModel = [] } = this.state || {};
+          let targetItem = weakerBaseModel[index];
+          targetItem.top = true;
+          weakerBaseModel.splice(index, 1);
+          weakerBaseModel.unshift(targetItem);
+          this.setState({
+            weakerBaseModel: weakerBaseModel
+          });
+        } else {
+          alert(resS.errorMsg);
+        }
+      }, resE => {
+        alert('置顶失败，请稍后再试');
+      });
+    }
+  }
+
   onDownload() {
+    const XLSX = require('xlsx');
     let json = this.state.donorBaseModel || [];
     let titleLine = {
       id: 'ID',
@@ -167,13 +248,33 @@ class Page extends React.Component {
     }, 100); 
   }
 
+  renderBannerList() {
+    const {
+      bannerList = []
+    } = this.state || {};
+    return (
+      <div style={{...styles.rowLine, marginTop: MARGINTOP, height: IMAGEWIDTH}}>
+        <span style={{...styles.largeText, color: 'transparent'}}>*</span>
+        <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>删除banner:</span>
+        <div style={{...styles.boxWithBorder, height: IMAGEWIDTH, flexDirection: 'row'}} className="pickerBox">
+          {bannerList.map((item, index) => {
+            const { imageUrl = ''} = item;
+            return <div style={{...styles.deleteImage, marginLeft: index === 0 ? '0' : '10px'}}>
+              {imageUrl ? <img src={imageUrl} style={styles.deleteImage}/> : null}
+              <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAMAAAAUyMtVAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABRUExURUxpcZmZmZiYmJiYmJubm5iYmJqampiYmJiYmJeXl5mZmZiYmJeXl5mZmZ6enp+fn5eXl5iYmJiYmJiYmKqqqqqqqpiYmJqampmZmZmZmZeXl6gE920AAAAadFJOUwBV9P4zhib8V+54r1YPIgjlVPmhCQPJWDeEA4yj+wAAAMVJREFUSMft1NsOgjAQRdEBhVYQwbvO/3+oMm0VsJdTX5WnkqxNAiSH6Itr10Gsr8/mcOSyAPx64MtJns/MSqf95un246krkUI83+RcqHRh/N3eaSm2SV+97lPF0rtCwz5e+Hys8PtwEfKhIuz9Rcz7irj/LFJ+WaT9vED8tMD8u0C9KxrY22KFe1tkeKJGnt/C3rwvsgwzDxfGtwot3PfXKmOv5PtgxfT/anivKmhLwnul/3v1o3vVD/BeHerxWGfs1ZXoAYfgJMTOIOBgAAAAAElFTkSuQmCC'
+                style={styles.deleteButton}
+                onClick={this.deleteBanner(index)}
+                />
+            </div>;
+          })}
+        </div>
+      </div>
+    );
+  }
   render() {
     const {
-      weakerBaseModel = {}, donorBaseModel = {}, bannerFiles = [], totalDonator = 0, totalMoney = 0
+      weakerBaseModel = [], donorBaseModel = [], bannerFiles = [], totalDonator = 0, totalMoney = 0
     } = this.state || {};
-    const MARGINTOP = '10px';
-    const TITLEWIDTH = '100px';
-    const IMAGEWIDTH = '100px';
     return (
       <div style={styles.page}>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
@@ -186,6 +287,7 @@ class Page extends React.Component {
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>捐赠总人数:</span>
           <span style={{...styles.largeText, ...styles.boxWithBorder, ...styles.textOverflow}}>{totalDonator}人</span>
         </div>
+        {this.renderBannerList()}
         <div style={{...styles.rowLine, marginTop: MARGINTOP, height: IMAGEWIDTH}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>上传banner图片:</span>
@@ -204,6 +306,9 @@ class Page extends React.Component {
               key={index + 'weaker'}
               data={item}
               isWeaker={true}
+              index={index}
+              onDeleteWeaker={this.onDeleteWeaker}
+              onSetTop={this.onSetTop}
             />
           );
         })}
@@ -262,15 +367,33 @@ const styles = {
   },
   downloadButton: {
     width: '200px',
-          lineHeight: '60px',
-          fontSize: '16px',
-          color: '#fff',
-          textAlign: 'left',
-          marginTop: '10px',
-          marginLeft: '50%',
-          transform: 'translate(-50%)',
-          borderRadius: '5px',
-          textAlign: 'center',
-          backgroundColor: '#ff3323'
+    lineHeight: '60px',
+    fontSize: '16px',
+    color: '#fff',
+    textAlign: 'left',
+    marginTop: '10px',
+    marginLeft: '50%',
+    transform: 'translate(-50%)',
+    borderRadius: '5px',
+    textAlign: 'center',
+    backgroundColor: '#ff3323'
+  },
+  deleteImage: {
+    width: '108px',
+    height: '50px',
+    backgroundColor: '#eee',
+    borderRadius: '10px',
+    position: 'relative'
+  },
+  deleteButton: {
+    position: 'absolute',
+    width: '16px',
+    height: '16px',
+    padding: '4px',
+    borderRadius: '8px',
+    right: '5px',
+    top: '5px',
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    zIndex: 2
   }
 };

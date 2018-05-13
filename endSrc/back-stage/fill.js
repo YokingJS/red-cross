@@ -1,6 +1,10 @@
 
 import React from 'react';
-import { List, InputItem, ImagePicker } from 'antd-mobile';
+// let ImagePicker = require('antd-mobile/lib/ImagePicker');
+// require('antd-mobile/lib/ImagePicker/style');
+// let InputItem = require('antd-mobile/lib/InputItem');
+// require('antd-mobile/lib/InputItem/style');
+import { InputItem, ImagePicker } from 'antd-mobile';
 import request from '../components/request';
 
 class Page extends React.Component {
@@ -49,7 +53,7 @@ class Page extends React.Component {
   onHelpImgChange(donorFiles, type, index) {
     this.setState({
       donorFiles,
-      imageUrl: donorFiles[0].url
+      imageUrl: donorFiles && donorFiles[0] && donorFiles[0].url || this.state.imageUrl
     });
   }
 
@@ -68,8 +72,7 @@ class Page extends React.Component {
       return;
     }  
 
-    if (title && familyDesc && patientDesc && name && age && disease && mobile && targetMoney && deployDepartment
-    && currentMoney && donatorNum) {
+    if (title && familyDesc && patientDesc && name && age && disease && mobile && targetMoney && deployDepartment) {
       if (save === 'save') {
         request.saveAppealRecordNotDeploy({
           id, title, familyDesc, patientDesc, imageUrl, videoUrl, name, sex, age, disease, mobile, targetMoney, deployDepartment,
@@ -215,6 +218,7 @@ class Page extends React.Component {
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>求助图片:</span>
           <div style={{...styles.boxWithBorder, height: IMAGEWIDTH, width: IMAGEWIDTH}} className="pickerBox">
+            <img src={imageUrl} style={styles.oldImage}/>
             <ImagePicker
               files={donorFiles}
               onChange={this.onHelpImgChange}
@@ -414,6 +418,13 @@ const styles = {
     lineHeight: '50px',
     fontSize: '12px',
     color: '#666666'
+  },
+  oldImage: {
+    width: '108px',
+    height: '50px',
+    borderRadius: '5px',
+    marginRight: '10px',
+    backgroundColor: '#eee'
   },
   fixedButton: {
     position: 'fixed',

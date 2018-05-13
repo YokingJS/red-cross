@@ -22,6 +22,7 @@ class Page extends React.Component{
   }
 
   componentWillMount() {
+    window.scrollTo(0,0); 
     this.getPageInfo();
   }
 
@@ -104,7 +105,7 @@ class Page extends React.Component{
     } = baseModel;
     return (
       <div style={styles.topInfo}>
-        <span style={{...styles.helpBrief, ...styles.textOverflow}}>一、求助者家庭及收入情况</span>
+        <span style={{...styles.helpBrief, ...styles.textOverflow}}>一、家庭及收入情况</span>
         <p style={styles.normalText}>{familyDesc}</p>
         <img
           // src='https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
@@ -129,24 +130,13 @@ class Page extends React.Component{
     return (
       <div style={styles.topInfo}>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、联系方式</span>
-        <div style={styles.rowLine}>
-          <span style={styles.largeText}>求助人:</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{name}</span>
-        </div>
-        <div style={styles.rowLine}>
-          <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{mobile}</span>
-          {/* <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}> / 13333333333</span> */}
-        </div>
-
-        <div style={{...styles.rowLine, marginTop: '1rem'}}>
+        <div style={{...styles.rowLine}}>
           <span style={styles.largeText}>普陀区红十字会联系人:</span>
           <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '.2rem'}}></span>
         </div>
         <div style={styles.rowLine}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>62441118-1108</span>
-          <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}> / 1109</span>
+          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{mobile}</span>
         </div>
       </div>
     );
@@ -157,11 +147,10 @@ class Page extends React.Component{
     const {
       projectFollowUp = '', id = '', name = ''
     } = baseModel;
-
     return (
       <div style={styles.fixedButton}>
-        <Link to={'/fillInfo?id=' + id + '&weaker=' + name + '&nothing=232323'} style={styles.helpButton}>帮助他</Link>
-        <a href={projectFollowUp} style={styles.followButton}>项目跟进</a>
+        <Link to={'/fillInfo?id=' + id + '&weaker=' + name + '&nothing=232323'} style={styles.helpButton}>帮助TA</Link>
+        <a href={projectFollowUp} style={{...styles.followButton, backgroundColor: projectFollowUp ? '#48D1CC' : '#cbcccd'}}>项目跟进</a>
       </div>
     );
   }
@@ -197,8 +186,8 @@ const styles = {
   normalText: {
     flex: 1,
     padding: '0 .4rem',
-    lineHeight: '.45rem',
-    fontSize: '.36rem',
+    lineHeight: '.6rem',
+    fontSize: '.42rem',
     color: '#999999'
   },
   largeText: {
@@ -322,7 +311,6 @@ const styles = {
     marginLeft: '.3rem',
     fontSize: '.55rem',
     color: '#fff',
-    backgroundColor: '#cbcccd',
     textAlign: 'center',
     borderRadius: '.6rem'
   }

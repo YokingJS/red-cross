@@ -215,10 +215,10 @@ class FillInfo extends React.Component {
           this.state.invoiceMobile = value;
           break;
         case 'invoiceAddress':
-          this.state.disease = value;
+          this.state.invoiceAddress = value;
           break;
         case 'remark':
-          this.state.videoUrl = value;
+          this.state.remark = value;
           break;
         default: break;
       }

@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { Modal } from 'antd-mobile';
+
+let Modal = require('antd-mobile/lib/Modal');
+require('antd-mobile/lib/Modal/style');
 
 
 class ButtonItem extends React.Component {
