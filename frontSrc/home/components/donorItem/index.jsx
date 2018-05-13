@@ -19,11 +19,11 @@ class DonorItem extends React.Component {
   render() {
     const { donorItem = {} } = this.state || {};
     const {
-      age = '', content = '', currentMoney = '', deployDepartment = '', disease = '', donatorNum = '',
+      age = '', familyDesc = '', currentMoney = '', deployDepartment = '', disease = '', donatorNum = '',
       id = '', imageUrl = '', name = '', sex = '', status = '', targetMoney = '', title = '', gmtModify = ''
     } = donorItem;
     return (
-      <Link style={styles.donorItem} to={'/donateDetail/' + id}>
+      <Link style={styles.donorItem} to={parseInt(status, 10) === 2 ? '' : '/donateDetail/' + id}>
         <div style={styles.redCrossInfo}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
@@ -38,19 +38,21 @@ class DonorItem extends React.Component {
           }}>{parseInt(status, 10) === 2 ? "已结束" : (new Date(gmtModify).toLocaleDateString() + '发布')}</span>
         </div>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>{title}</span>
-        <span style={styles.donorCondition}>{content}</span>
+        <div style={{...styles.donorCondition}} className={'lineLength2'}>{familyDesc}</div>
         <img
           src={imageUrl}
           alt=""
           style={styles.donorPhoto}
         />
+        {parseInt(status, 10) === 2 ? null : <div style={styles.clickForDetail}>点击查看</div>}
         <div style={styles.donorInfo}>
           <span style={{...styles.donorInfoText, maxWidth: '4rem'}}>姓名: {name}</span>
           <span style={{...styles.donorInfoText, maxWidth: '3rem'}}>性别: {(sex === 0 || sex === '0') ? '男' : '女'}</span>
           <span style={{...styles.donorInfoText, maxWidth: '3rem'}}>年龄: {age}岁</span>
         </div>
         <div style={styles.donorInfo}>
-          <span style={{...styles.donorInfoText, maxWidth: '8rem'}}>病种: {disease}</span>
+          <span style={{...styles.donorInfoText, paddingRight: '0rem'}}>病种:&nbsp;</span>
+          <span style={{...styles.donorInfoText, ...styles.textOverflow, maxWidth: '8rem', color: '#ff3330'}}>{disease}</span>
         </div>
         <div style={{...styles.donateInfo, padding: '0 .4rem'}}>
           <div style={styles.donateInfoItem}>
@@ -136,20 +138,35 @@ const styles = {
     padding: '0 .4rem',
     marginTop: '.1rem',
     lineHeight: '.45rem',
+    maxHeight: '.9rem',
     fontSize: '.36rem',
     color: '#999999'
   },
   donorPhoto: {
     margin: '0 .4rem',
     flex: 1,
+    borderRadius: '2px',
     height: '5rem',
     marginTop: '.45rem'
+  },
+  clickForDetail: {
+    width: '1.6rem',
+    heigth: '.6rem',
+    color: '#fff',
+    fontSize: '.32rem',
+    lineHeight: '.6rem',
+    textAlign: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: '.1rem',
+    marginTop: '-0.8rem',
+    marginLeft: '8.6rem'
   },
   donorInfo: {
     flex: 1,
     marginTop: '.45rem',
     padding: '0 .4rem',
     display: 'flex',
+    marginTop: '0.8rem',
     flexDirection: 'row'
   },
   donorInfoText: {

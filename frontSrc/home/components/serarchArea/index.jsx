@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { TextareaItem } from 'antd-mobile';
-import { Modal } from 'antd-mobile';
+let Modal = require('antd-mobile/lib/Modal');
+require('antd-mobile/lib/Modal/style');
+import {withRouter} from "react-router-dom";
 import request from '../../../components/request';
 
 class SearchArea extends React.Component {
@@ -35,10 +37,12 @@ class SearchArea extends React.Component {
     request.getOrderByCondition('?name=' + name + '&mobile=' + mobile).then(resS => {
       if (!resS.errorMsg) {
         if(resS.data && resS.data.length > 0) {
-          this.setState({
-            donateInfoList: resS.data || []
-          });
-          this.onShowModal();
+          // this.setState({
+          //   donateInfoList: resS.data || []
+          // });
+          window.setCookie('jiushu_data_donateInfoList', JSON.stringify(resS.data || []));
+          this.props.history.push('/donateResult');
+          // this.onShowModal();
         } else {
           alert('查无信息~');
         }
@@ -81,21 +85,21 @@ class SearchArea extends React.Component {
       <div style={styles.searchArea}>
         <span style={{...styles.searchTitle, ...styles.textOverflow}}>捐款查询平台</span>
         <div style={styles.inputBox}>
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxBAMAAABucDcRAAADI2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0YwRjdGRDU5Mzg3MTFFNjhCRUFBMDNBOEQwNTY0RjQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0YwRjdGRDY5Mzg3MTFFNjhCRUFBMDNBOEQwNTY0RjQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3RjBGN0ZEMzkzODcxMUU2OEJFQUEwM0E4RDA1NjRGNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3RjBGN0ZENDkzODcxMUU2OEJFQUEwM0E4RDA1NjRGNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ps529v8AAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAJFBMVEWZmZlHcEyZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZk2EEruAAAADHRSTlP/AFcI3BnwOHCli7pJ4CL/AAABc0lEQVQ4y3WTv0vDUBDHv5QQWzu9JjFaF7N076AgLkEU/DEVRXALFbE6tVtxqiB2jSiCWwXRtaB/oC/vXfPe2Zcb8uM++d67u9xBaBu/Zv7xVBiDukafUHbS4yCagazRY6CD0vo2aEvH7fRse/wmH14MCObAfrd4CR6BZrcEm8CAPguegJ8SzOCNFpHjFI0FaAGHJv1zICFwAc9kL6IU1wRmuLEKFkOKhQh4sME6oAKgDc/2iyDFhwIhagyICa4UGOq7sR2sKDDBMwcbWFUg52cXpzcVSDHiINbZIEOPgwi+AkCXg0B7qkFlqMrDK9OtLHCpJWvUkhB1DkJqomw7zzc+SJw/ygxczn+tAXwYLMDH5/I9KQcu5wNXK8EeUKfEArkPfmIP9VE51CBJsQa79hrMSfJ/cQYtkuhVy61V29ISWs4v7b+TFZEElM79b4bTb5WClmC5Zi1xAC1xASVxASVxgkLiBFLiuUELvhuITr8CCPEHD9RqP0qeKH0AAAAASUVORK5CYII="
-            alt=""
-            style={styles.searchButton}
-            onClick={this.onSearchDonate}
-          />
           <TextareaItem
             placeholder="单位查询直接输入名称，个人查询请输入姓名+手机号后四位，如韩星0000"
             data-seed="logId"
             autoHeight
             ref="search"
-            style={{paddingRight: '.1rem'}}
+            style={{paddingRight: '0rem'}}
+          />
+          <img
+            src="https://gw.alicdn.com/tfs/TB1I17srntYBeNjy1XdXXXXyVXa-130-69.png"
+            alt=""
+            style={styles.searchButton}
+            onClick={this.onSearchDonate}
           />
         </div>
-        <Modal
+        {/* <Modal
           visible={isShowModal}
           transparent
           maskClosable={true}
@@ -107,14 +111,14 @@ class SearchArea extends React.Component {
             <span style={styles.modalTitle}>捐款信息</span>
             {this.renderDonateInfoList()}
           </div>
-        </Modal> 
+        </Modal>  */}
       </div>
     );
   }
 
 }
 
-export default SearchArea;
+export default withRouter(SearchArea);
 
 const styles = {
   textOverflow: {
@@ -148,9 +152,9 @@ const styles = {
     alignItems: 'center'
   },
   searchButton: {
-    width: '.5rem',
-    height: '.5rem',
-    marginLeft: '.4rem'
+    width: '.86rem',
+    height: '.6rem',
+    marginRight: '.05rem'
   },
   modalContent: {
     flex: 1,

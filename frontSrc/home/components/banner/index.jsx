@@ -1,7 +1,9 @@
 
 
 import React from 'react';
-import { Carousel } from 'antd-mobile';
+// import { Carousel } from 'antd-mobile';
+let Carousel = require('antd-mobile/lib/Carousel');
+require('antd-mobile/lib/Carousel/style');
 
 class Banner extends React.Component{
   constructor(props, context) {

@@ -6,6 +6,8 @@ class ListItem extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.cancelDeploy = this.cancelDeploy.bind(this);
+    this.onDeleteItem = this.onDeleteItem.bind(this);
+    this.onSetTop = this.onSetTop.bind(this);
   }
 
   cancelDeploy() {
@@ -21,12 +23,38 @@ class ListItem extends React.Component {
     });
   }
 
+  onDeleteItem() {
+    const data = this.props.data || {};
+    const index = this.props.index;
+    const isWeaker = this.props.isWeaker || false;
+    const onDeleteWeaker = this.props.onDeleteWeaker;
+    const {
+      id = ''
+    } = data;
+    if (id && onDeleteWeaker) {
+      onDeleteWeaker && onDeleteWeaker(id, index);
+    }
+  }
+
+  onSetTop() {
+    const data = this.props.data || {};
+    const index = this.props.index;
+    const isWeaker = this.props.isWeaker || false;
+    const onSetTop = this.props.onSetTop;
+    const {
+      id = '', top = false
+    } = data;
+    if (id && onSetTop) {
+      onSetTop && onSetTop(id, index, top);
+    }
+  }
+
   render() {
     const data = this.props.data || {};
     const isWeaker = this.props.isWeaker || false;
     const {
       age = '', name = '', currentMoney = '', donatorNum = '', status = '', gmtModify = '', id = '', mobile = '',
-      money = '', donateTime = '', isNeedInvoice = '', weixinPayId = '', appealRecordTitle = '', remark = ''
+      money = '', donateTime = '', isNeedInvoice = '', weixinPayId = '', appealRecordTitle = '', remark = '', top = false
     } = data;
     // 救助姓名、已筹金额、捐款人数，项目状态、发布时间
     return (
@@ -75,20 +103,29 @@ class ListItem extends React.Component {
             {isWeaker ? (new Date(gmtModify)).toLocaleDateString() : remark}
           </span>
         </div>
+        {isWeaker ? <div style={{...styles.modelItem, ...styles.buttonBox}}>
+          <div style={styles.modelItemButton} onClick={this.onSetTop}>{top ? '取消置顶' : '置顶'}</div>
+        </div> : null}
         {
-          isWeaker ? <Link style={styles.modelItem} to={'/backStage-fill/' + id}>
+          isWeaker ? <Link style={{...styles.modelItem, ...styles.buttonBox}} to={'/backStage-fill/' + id}>
             <div style={styles.modelItemButton}>编辑</div>
           </Link> : null
         }
-        {parseInt(status, 10) !== 1 || !isWeaker ? null : <div style={styles.modelItem}>
+        {parseInt(status, 10) !== 1 || !isWeaker ? null : <div style={{...styles.modelItem, ...styles.buttonBox}}>
           <div style={styles.modelItemButton} onClick={this.cancelDeploy}>取消发布</div>
         </div>}
+        {isWeaker ? <div style={{...styles.modelItem, ...styles.buttonBox}}>
+          <div style={styles.modelItemButton} onClick={this.onDeleteItem}>删除</div>
+        </div> : null}
       </div>
     );
   }
 }
 
 export default ListItem;
+
+const LINEHEIGHT = '36px';
+const HALFHEIGHT = '18px';
 
 const styles = {
   textOverflow: {
@@ -103,12 +140,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'center',
     paddingBottom: '5px',
     backgroundColor: '#fff'
   },
   modelItem: {
-    width: '120px',
-    height: '40px',
+    width: '100px',
+    height: LINEHEIGHT,
     borderRadius: '5px',
     marginTop: '5px',
     marginLeft: '5px',
@@ -118,7 +156,7 @@ const styles = {
   },
   modelItemTitle: {
     flex: 1,
-    height: '20px',
+    height: HALFHEIGHT,
     fontSize: '12px',
     color: '#4682B4',
     lineHeight: '20px',
@@ -126,10 +164,16 @@ const styles = {
   },
   modelItemButton: {
     flex: 1,
-    height: '40px',
-    fontSize: '20px',
-    color: '#CD5555',
-    lineHeight: '40px',
+    height: '26px',
+    fontSize: '14px',
+    fontWeight: 300,
+    color: '#fff',
+    lineHeight: '26px',
     textAlign: 'center'
+  },
+  buttonBox: {
+    width: '70px',
+    height: '26px',
+    backgroundColor: '#EE2C2C'
   }
 };
