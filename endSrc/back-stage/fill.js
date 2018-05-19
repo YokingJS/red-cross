@@ -2,9 +2,8 @@
 import React from 'react';
 // let ImagePicker = require('antd-mobile/lib/ImagePicker');
 // require('antd-mobile/lib/ImagePicker/style');
-// let InputItem = require('antd-mobile/lib/InputItem');
 // require('antd-mobile/lib/InputItem/style');
-import { InputItem, ImagePicker } from 'antd-mobile';
+import { InputItem, ImagePicker, TextareaItem, Toast } from 'antd-mobile';
 import request from '../components/request';
 
 class Page extends React.Component {
@@ -63,12 +62,24 @@ class Page extends React.Component {
       currentMoney = '', donatorNum = '' , projectFollowUp = '', status = '0'
     } = this.state || {};
 
+    familyDesc = familyDesc.replace(/\n/g, '</br>');
+    familyDesc = familyDesc.replace(/\r/g, '</br>');
+    familyDesc = familyDesc.replace(/\r\n/g, '</br>');
+
+    patientDesc = patientDesc.replace(/\n/g, '</br>');
+    patientDesc = patientDesc.replace(/\r/g, '</br>');
+    patientDesc = patientDesc.replace(/\r\n/g, '</br>');
+
+    mobile = mobile.replace(/\n/g, '</br>');
+    mobile = mobile.replace(/\r/g, '</br>');
+    mobile = mobile.replace(/\r\n/g, '</br>');
+
     if (sex === '男' || sex === 0 || sex === '0') {
       sex = 0;
     } else if (sex === '女' || sex === 1 || sex === '1') {
       sex = 1;
     } else {
-      alert('请正确填写性别~');
+      Toast.fail('请正确填写性别~', 1.5);
       return;
     }  
 
@@ -79,9 +90,9 @@ class Page extends React.Component {
           currentMoney, donatorNum, projectFollowUp, status
         }).then(resS => {
           if (resS.errorMsg) {
-            alert(resS.errorMsg);
+            Toast.fail(resS.errorMsg, 1.5);
           } else {
-            alert('保存成功~');
+            Toast.success('保存成功~', 1.5);
           }
         });
       } else {
@@ -90,14 +101,14 @@ class Page extends React.Component {
           currentMoney, donatorNum, projectFollowUp
         }).then(resS => {
           if (resS.errorMsg) {
-            alert(resS.errorMsg);
+            Toast.fail(resS.errorMsg, 1.5);
           } else {
-            alert('发布成功~');
+            Toast.success('发布成功~', 1.5);
           }
         });
       }
     } else {
-      alert('缺少必填项');
+      Toast.fail('缺少必填项~', 1.5);
     }
   }
 
@@ -192,33 +203,37 @@ class Page extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
+        <div style={{...styles.rowLine, marginTop: MARGINTOP, height: 'auto'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>家庭情况:</span>
-          <div style={styles.boxWithBorder} className="pickerBox">
-            <InputItem
+          <div style={{...styles.boxWithBorder, height: 'auto'}} className="pickerBox">
+            <TextareaItem
               clear
+              placeholder="支持回车换行"
               value={familyDesc}
+              rows={5}
               onChange={this.onChangeInput('familyDesc')}
-            ></InputItem>
+            ></TextareaItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
+        <div style={{...styles.rowLine, marginTop: MARGINTOP, height: 'auto'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>患者境况:</span>
-          <div style={styles.boxWithBorder} className="pickerBox">
-            <InputItem
+          <div style={{...styles.boxWithBorder, height: 'auto'}} className="pickerBox">
+            <TextareaItem
               clear
+              placeholder="支持回车换行"
               value={patientDesc}
+              rows={5}
               onChange={this.onChangeInput('patientDesc')}
-            ></InputItem>
+            ></TextareaItem>
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP, height: IMAGEWIDTH}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>求助图片:</span>
           <div style={{...styles.boxWithBorder, height: IMAGEWIDTH, width: IMAGEWIDTH}} className="pickerBox">
-            <img src={imageUrl} style={styles.oldImage}/>
+            {imageUrl ? <img src={imageUrl} style={styles.oldImage}/> : null}
             <ImagePicker
               files={donorFiles}
               onChange={this.onHelpImgChange}
@@ -263,19 +278,6 @@ class Page extends React.Component {
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
-          <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>联系电话:</span>
-          <div style={styles.boxWithBorder} className="pickerBox">
-            <InputItem
-              clear
-              placeholder="请输入手机号"
-              value={mobile}
-              onChange={this.onChangeInput('mobile')}
-              type="phone"
-            ></InputItem>
-          </div>
-        </div>
-        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
-          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>救助人年龄:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
@@ -309,7 +311,7 @@ class Page extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
+        {/* <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>已筹金额:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
@@ -320,8 +322,8 @@ class Page extends React.Component {
               onChange={this.onChangeInput('currentMoney')}
             ></InputItem>
           </div>
-        </div>
-        <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
+        </div> */}
+        {/* <div style={{...styles.rowLine, marginTop: MARGINTOP}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>捐款人数:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
@@ -332,7 +334,7 @@ class Page extends React.Component {
               onChange={this.onChangeInput('donatorNum')}
             ></InputItem>
           </div>
-        </div>
+        </div> */}
         <div style={{...styles.rowLine, marginTop: '35px'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>项目状态:</span>
@@ -348,6 +350,19 @@ class Page extends React.Component {
               value={deployDepartment}
               onChange={this.onChangeInput('deployDepartment')}
             ></InputItem>
+          </div>
+        </div>
+        <div style={{...styles.rowLine, marginTop: MARGINTOP, height: 'auto'}}>
+          <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
+          <span style={{...styles.largeText, width: TITLEWIDTH, textAlign: 'right'}}>联系方式:</span>
+          <div style={{...styles.boxWithBorder, height: 'auto'}} className="pickerBox">
+            <TextareaItem
+              clear
+              placeholder="支持回车换行"
+              value={mobile}
+              rows={2}
+              onChange={this.onChangeInput('mobile')}
+            ></TextareaItem>
           </div>
         </div>
         <div style={{...styles.rowLine, marginTop: MARGINTOP}}>

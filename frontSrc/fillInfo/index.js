@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { Picker, List, InputItem } from 'antd-mobile';
+import { Picker, List, InputItem, Toast } from 'antd-mobile';
 
 import FootInfo from '../components/footInfo/index';
 import request from '../components/request';
@@ -59,7 +59,7 @@ class FillInfo extends React.Component {
       this.state.appealRecordId = jiushu_data_id;
       this.reRender();
     } else {
-      alert('捐赠信息丢失');
+      Toast.fail('捐赠信息丢失', 2);
     }
   }
 
@@ -139,7 +139,7 @@ class FillInfo extends React.Component {
 
   onSubmit() {
     if (!this.isWeChat()) {
-      alert('请在微信客户端打开');
+      Toast.info('请在微信客户端打开', 3);
       return;
     }
     let {
@@ -148,11 +148,11 @@ class FillInfo extends React.Component {
       isDisclosure = 0, openCode = ''
     } = this.state || {};
     if (!name || !mobile || !appealRecordId || !money) {
-      alert('缺少必要信息！');
+      Toast.fail('缺少必要信息！', 1.5);
       return;
     }
     if (isNeedInvoice && (!invoiceHeader || !invoiceName || !invoiceMobile || !invoiceAddress)) {
-      alert('索要发票需填写发票信息！');
+      Toast.fail('索要发票需填写发票信息！', 1.5);
       return;
     }
     let appealRecordTitle = window.getCookie('jiushu_data_appealRecordTitle');
@@ -175,7 +175,7 @@ class FillInfo extends React.Component {
       openId: openCode
     }).then(resS => {
       if (resS.errorMsg) {
-        alert(resS.errorMsg);
+        Toast.fail(resS.errorMsg, 1.5);
         return;
       } 
       let resData = resS.data || {};
@@ -186,9 +186,9 @@ class FillInfo extends React.Component {
         }, 700);
       });
     }, resE => {
-      alert('请刷新页面再试试吧~');
+      Toast.fail('请刷新页面再试试吧~', 1.5);
     }).catch(err => {
-      alert('微信出错啦~' + err.message);
+      Toast.fail('微信出错啦~' + err.message, 1.5);
     });
 
   }

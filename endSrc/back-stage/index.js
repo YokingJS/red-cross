@@ -1,10 +1,12 @@
 
 import React from 'react';
-import { ImagePicker } from 'antd-mobile';
+import {Link} from 'react-router-dom';
+import { ImagePicker, Modal, Toast } from 'antd-mobile';
 
 import request from '../components/request';
 import ListItem from './components/listItem'
 
+const ALERT = Modal.alert;
 const MARGINTOP = '10px';
 const TITLEWIDTH = '100px';
 const IMAGEWIDTH = '100px';
@@ -70,10 +72,10 @@ class Page extends React.Component {
             bannerList: bannerList
           });
         } else {
-          alert(resS.errorMsg);
+          Toast.fail(resS.errorMsg, 1.5);
         }
       }, resE => {
-        alert('删除失败,稍后再试');
+        Toast.fail('删除失败,稍后再试', 1.5);
       });
     };
   }
@@ -88,7 +90,7 @@ class Page extends React.Component {
         imageData: imageData
       }).then(resS => {
         if (resS.errorMsg) {
-          alert('上传失败，请重试');
+          Toast.fail('上传失败，请重试', 1.5);
         } else {
           window.location.href = window.location.href;
         }
@@ -97,19 +99,27 @@ class Page extends React.Component {
   }
 
   onDeleteWeaker(id, index) {
-    request.deleteAppealRecordById('?id=' + id).then(resS => {
-      if(!resS.errorMsg) {
-        const { weakerBaseModel = [] } = this.state || {};
-        weakerBaseModel.splice(index, 1);
-        this.setState({
-          weakerBaseModel: weakerBaseModel
-        });
-      } else {
-        alert(resS.errorMsg);
-      }
-    }, resE => {
-      alert('删除失败，请稍后再试');
-    });
+    const alertInstance = ALERT('确认提醒', '你确认要删除吗？？？', [
+      { text: '取消', onPress: () => {}, style: 'default' },
+      { 
+        text: '确认',
+        onPress: () => {
+          request.deleteAppealRecordById('?id=' + id).then(resS => {
+            if(!resS.errorMsg) {
+              const { weakerBaseModel = [] } = this.state || {};
+              weakerBaseModel.splice(index, 1);
+              this.setState({
+                weakerBaseModel: weakerBaseModel
+              });
+            } else {
+              Toast.fail(resS.errorMsg, 1.5);
+            }
+          }, resE => {
+            Toast.fail('删除失败，请稍后再试', 1.5);
+          });
+       }
+      },
+    ]);
   }
 
   onSetTop(id, index, isTop) {
@@ -125,10 +135,10 @@ class Page extends React.Component {
             weakerBaseModel: weakerBaseModel
           });
         } else {
-          alert(resS.errorMsg);
+          Toast.fail(resS.errorMsg, 1.5);
         }
       }, resE => {
-        alert('取消失败，请稍后再试');
+        Toast.fail('取消失败，请稍后再试', 1.5);
       });
     } else {
       request.setAppealRecordTop('?id=' + id).then(resS => {
@@ -142,10 +152,10 @@ class Page extends React.Component {
             weakerBaseModel: weakerBaseModel
           });
         } else {
-          alert(resS.errorMsg);
+          Toast.fail(resS.errorMsg, 1.5);
         }
       }, resE => {
-        alert('置顶失败，请稍后再试');
+        Toast.fail('置顶失败，请稍后再试', 1.5);
       });
     }
   }
@@ -153,6 +163,29 @@ class Page extends React.Component {
   onDownload() {
     const XLSX = require('xlsx');
     let json = this.state.donorBaseModel || [];
+    json.map((item, index) => {
+      if (item.money) {
+        json[index].money = item.money / 100;
+      }
+      if (item.gmtCreate) {
+        json[index].gmtCreate = (new Date(item.gmtCreate)).toLocaleDateString();
+      }
+      if (item.gmtModify) {
+        json[index].gmtModify = (new Date(item.gmtModify)).toLocaleDateString();
+      }
+      if (item.isDisclosure || item.isDisclosure === 0 || item.isDisclosure === '0') {
+        json[index].isDisclosure = item.isDisclosure === 1 || item.isDisclosure === '1' ? '公开' : '不公开';
+      }
+      if (item.donateType || item.donateType === 0 || item.donateType === '0') {
+        json[index].donateType = item.donateType === 1 || item.donateType === '1' ? '个人' : '公司';
+      }
+      if (item.isPaySuccess || item.isPaySuccess === 0 || item.isPaySuccess === '0') {
+        json[index].isPaySuccess = item.isPaySuccess === 1 || item.isPaySuccess === '1' ? '成功' : '失败';
+      }
+      if (item.isNeedInvoice || item.isNeedInvoice === 0 || item.isNeedInvoice === '0') {
+        json[index].isNeedInvoice = item.isNeedInvoice === 1 || item.isNeedInvoice === '1' ? '要' : '不要';
+      }
+    });
     let titleLine = {
       id: 'ID',
       name: '姓名',
@@ -161,20 +194,20 @@ class Page extends React.Component {
       appealRecordTitle: '捐助项目',
       money: '金额',
       mobile: '电话',
-      donateTime: '捐助时间',
-      donateType: '币种',
+      donateTime: '初始时间',
+      donateType: '公司/个人',
       isNeedInvoice: '索要发票',
       invoiceHeader: '发票抬头',
       invoiceName: '发票名',
       invoiceMobile: '发票电话',
       invoiceAddress: '发票地址',
       remark: '备注',
-      isDisclosure: 'isDisclosure',
+      isDisclosure: '是否公开',
       isPaySuccess: '成功支付',
       openId: 'openId',
-      spbillCreateIp: 'spbillCreateIp',
-      gmtCreate: '创建时间',
-      gmtModify: '更新时间'
+      spbillCreateIp: '用户IP',
+      gmtCreate: '数据创建',
+      gmtModify: '捐助时间'
     };
     let keyMap = [] // 获取键
     for (let k in json[0]) {
@@ -204,7 +237,7 @@ class Page extends React.Component {
       }));
     }).reduce((prev, next) => prev.concat(next)).forEach(function (v) {
       tmpdata[v.position] = {
-        v: (v.position.match(/'H'|'T'|'U'/) > 0 && v.v) ? (new Date(v.v)).toLocaleDateString() : v.v
+        v: v.v
       }
     });
 
@@ -300,6 +333,7 @@ class Page extends React.Component {
           </div>
         </div>
         <div style={{lineHeight: '70px', fontSize: '20px', color: '#333333', textAlign: 'left', marginTop: '10px'}}>救助信息列表</div>
+        <Link  to={'/backStage-fill'} style={styles.addNewWeaker}>新增救助信息</Link>
         {weakerBaseModel.map((item, index) => {
           return (
             <ListItem
@@ -322,7 +356,7 @@ class Page extends React.Component {
             />
           );
         })}
-        {donorBaseModel.length > 0 ? <div style={styles.downloadButton} onClick={this.onDownload}>导出救助信息</div> : null}
+        {donorBaseModel.length > 0 ? <div style={styles.downloadButton} onClick={this.onDownload}>导出捐助信息</div> : null}
       </div>
     );
   }
@@ -364,6 +398,17 @@ const styles = {
     lineHeight: '50px',
     fontSize: '12px',
     color: '#666666'
+  },
+  addNewWeaker: {
+    width: '150px',
+    lineHeight: '30px',
+    fontSize: '12px',
+    color: '#fff',
+    textAlign: 'left',
+    marginLeft: '30px',
+    borderRadius: '5px',
+    textAlign: 'center',
+    backgroundColor: '#ff3323'
   },
   downloadButton: {
     width: '200px',
