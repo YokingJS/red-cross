@@ -22,6 +22,7 @@ class DonorItem extends React.Component {
       age = '', familyDesc = '', currentMoney = '', deployDepartment = '', disease = '', donatorNum = '',
       id = '', imageUrl = '', name = '', sex = '', status = '', targetMoney = '', title = '', gmtModify = ''
     } = donorItem;
+    let newFamilyDesc = familyDesc.replace(/<\/br>/g, '');
     return (
       <Link style={styles.donorItem} to={parseInt(status, 10) === 2 ? '' : '/donateDetail/' + id}>
         <div style={styles.redCrossInfo}>
@@ -38,7 +39,7 @@ class DonorItem extends React.Component {
           }}>{parseInt(status, 10) === 2 ? "已结束" : (new Date(gmtModify).toLocaleDateString() + '发布')}</span>
         </div>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>{title}</span>
-        <div style={{...styles.donorCondition}} className={'lineLength2'}>{familyDesc}</div>
+        <div style={{...styles.donorCondition}} className={'lineLength2'}>{newFamilyDesc}</div>
         <img
           src={imageUrl}
           alt=""

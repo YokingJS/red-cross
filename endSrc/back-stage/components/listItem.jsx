@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import request from '../../components/request';
+import { Toast } from 'antd-mobile';
 
 class ListItem extends React.Component {
   constructor(props, context) {
@@ -17,7 +18,7 @@ class ListItem extends React.Component {
     } = data;
     request.undeployAppealRecord('?id=' + id).then(res => {
       if (!res.errorMsg) {
-        alert('取消成功');
+        Toast.success('取消成功~', 1.5);
       }
       window.location.href = window.location.href;
     });

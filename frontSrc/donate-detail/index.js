@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import FootInfo from '../components/footInfo/index';
 import request from '../components/request';
 
+const BREAK_LINE = '</br>';
 class Page extends React.Component{
   constructor(props, context) {
     super(props, context);
@@ -85,7 +86,7 @@ class Page extends React.Component{
             <span style={{...styles.donateCountItemBottomText, ...styles.textOverflow}}>捐款人数</span>
           </div>
         </div>
-        {videoUrl || 1 ? <div style={styles.videoBox}>
+        {videoUrl ? <div style={styles.videoBox}>
           <iframe
             frameBorder="0"
             style={styles.video}
@@ -103,10 +104,17 @@ class Page extends React.Component{
     const {
       imageUrl = '', familyDesc = '', patientDesc = ''
     } = baseModel;
+    let familyDescArr = familyDesc.split(BREAK_LINE);
+    let patientDescArr = patientDesc.split(BREAK_LINE);
     return (
       <div style={styles.topInfo}>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>一、家庭及收入情况</span>
-        <p style={styles.normalText}>{familyDesc}</p>
+        {
+          familyDescArr && familyDescArr.length ? familyDescArr.map((item, index) => {
+            item = item.replace(/(^\s*)|(\s*$)/g,"");
+            return <div style={styles.normalText} key={index + 'family'}><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{item}</div>
+          }) : null
+        }
         <img
           // src='https://gw.alicdn.com/tfs/TB1JPTXoFuWBuNjSspnXXX1NVXa-702-360.png'
           src={imageUrl}
@@ -114,10 +122,12 @@ class Page extends React.Component{
           style={styles.normalImage}
         />
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>二、患者情况</span>
-        <p style={styles.normalText}>{patientDesc}</p>
-        {/* <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、帮助情况</span>
-        <p style={styles.normalText}>帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况
-          帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况帮助情况</p> */}
+        {
+          patientDescArr && patientDescArr.length ? patientDescArr.map((item, index) => {
+            item = item.replace(/(^\s*)|(\s*$)/g,"");
+            return <div style={styles.normalText} key={index + 'patient'}><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>{item}</div>
+          }) : null
+        }
       </div>
     );
   }
@@ -127,16 +137,27 @@ class Page extends React.Component{
     const {
       name = '', mobile = ''
     } = baseModel;
+    let mobileArr = mobile.split(BREAK_LINE);
     return (
       <div style={styles.topInfo}>
         <span style={{...styles.helpBrief, ...styles.textOverflow}}>三、联系方式</span>
-        <div style={{...styles.rowLine}}>
+        {/* <div style={{...styles.rowLine}}>
           <span style={styles.largeText}>普陀区红十字会联系人:</span>
           <span style={{...styles.largeText, flex: 1, ...styles.textOverflow, marginLeft: '.2rem'}}></span>
-        </div>
-        <div style={styles.rowLine}>
+        </div> */}
+        <div style={{...styles.rowLine}}>
           <span style={styles.largeText}>联系电话:</span>
-          <span style={{...styles.largeText, maxWidth: '4rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>{mobile}</span>
+        </div>
+        <div style={{...styles.rowLine, height: 'auto', display: 'flex', flexDirection: 'column'}}>
+          {
+            mobileArr && mobileArr.length ? mobileArr.map((item, index) => {
+              item = item.replace(/(^\s*)|(\s*$)/g,"");
+              return <span
+                style={{...styles.largeText, maxWidth: '8rem', ...styles.textOverflow, color: '#ff3333', marginLeft: '.2rem'}}>
+                {item}
+              </span>
+            }) : null
+          }
         </div>
       </div>
     );
@@ -188,7 +209,9 @@ const styles = {
     padding: '0 .4rem',
     lineHeight: '.6rem',
     fontSize: '.42rem',
-    color: '#999999'
+    color: '#999999',
+    wordWrap: 'break-word',
+    wordBreak: 'break-all'
   },
   largeText: {
     lineHeight: '.8rem',

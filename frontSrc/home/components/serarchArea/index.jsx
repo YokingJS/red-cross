@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TextareaItem } from 'antd-mobile';
+import { TextareaItem, Toast } from 'antd-mobile';
 let Modal = require('antd-mobile/lib/Modal');
 require('antd-mobile/lib/Modal/style');
 import {withRouter} from "react-router-dom";
@@ -37,14 +37,11 @@ class SearchArea extends React.Component {
     request.getOrderByCondition('?name=' + name + '&mobile=' + mobile).then(resS => {
       if (!resS.errorMsg) {
         if(resS.data && resS.data.length > 0) {
-          // this.setState({
-          //   donateInfoList: resS.data || []
-          // });
           window.setCookie('jiushu_data_donateInfoList', JSON.stringify(resS.data || []));
           this.props.history.push('/donateResult');
           // this.onShowModal();
         } else {
-          alert('查无信息~');
+          Toast.info('查无信息~', 1.5);
         }
         
       }
