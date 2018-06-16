@@ -254,7 +254,7 @@
       window.delCookie = function (name) {
           var exp = new Date();
           exp.setTime(exp.getTime() - 1);
-          var cval = yuJS.getCookie(name);
+          var cval = window.getCookie(name);
           if (cval != null){
               document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + "; path=/";
           }
