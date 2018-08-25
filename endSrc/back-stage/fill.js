@@ -40,9 +40,12 @@ class Page extends React.Component {
     let requestId = (pageUrl.split('/') || []).pop() || '';
     if (!requestId.match(/^[0-9]*$/)) return;
     request.getDrftAppealById('?id=' + requestId).then((res) => {
-      if (!res.errorMsg) {
+      if (!res.errorMsg && res.data) {
+        let data = res.data || {};
+        data.targetMoney = (data.targetMoney && (parseInt(data.targetMoney, 10)) / 100) || 0;
+        data.currentMoney = (data.currentMoney && (parseInt(data.currentMoney, 10)) / 100) || 0;
         this.setState({
-          ...(res.data || {})
+          ...(data || {})
         });
       }
     }, resE => {
@@ -61,6 +64,12 @@ class Page extends React.Component {
       sex = '', age = '', disease = '', mobile = '', targetMoney = '', deployDepartment = '',
       currentMoney = '', donatorNum = '' , projectFollowUp = '', status = '0'
     } = this.state || {};
+
+    targetMoney = (targetMoney && (targetMoney + '').replace(/[^\d^\.]+/ig,"")) || 0;
+    targetMoney = parseFloat(targetMoney) && (parseFloat(targetMoney).toFixed(2) * 100);
+
+    currentMoney = (currentMoney && (currentMoney + '').replace(/[^\d^\.]+/ig,"")) || 0;
+    currentMoney = parseFloat(currentMoney) && (parseFloat(currentMoney).toFixed(2) * 100);
 
     familyDesc = familyDesc.replace(/\n/g, '</br>');
     familyDesc = familyDesc.replace(/\r/g, '</br>');
@@ -147,13 +156,13 @@ class Page extends React.Component {
           this.state.mobile = value;
           break;
         case 'targetMoney':
-          this.state.targetMoney = value * 100;
+          this.state.targetMoney = value.replace(/[^\d^\.]+/ig,"");
           break;
         case 'deployDepartment':
           this.state.deployDepartment = value;
           break;
         case 'currentMoney':
-          this.state.currentMoney = value * 100;
+          this.state.currentMoney = value.replace(/[^\d^\.]+/ig,"");
           break;
         case 'donatorNum':
           this.state.donatorNum = value;
@@ -305,8 +314,7 @@ class Page extends React.Component {
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
-              type="targetMoney"
-              value={targetMoney / 100}
+              value={targetMoney}
               onChange={this.onChangeInput('targetMoney')}
             ></InputItem>
           </div>
@@ -317,8 +325,7 @@ class Page extends React.Component {
           <div style={styles.boxWithBorder} className="pickerBox">
             <InputItem
               clear
-              type="number"
-              value={currentMoney / 100}
+              value={currentMoney}
               onChange={this.onChangeInput('currentMoney')}
             ></InputItem>
           </div>
