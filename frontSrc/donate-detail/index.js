@@ -28,8 +28,9 @@ class Page extends React.Component{
   }
 
   getPageInfo() {
-    let pageUrl = window.location.pathname || '';
-    let requestId = (pageUrl.split('/') || []).pop() || '';
+    const pageUrl = window.location.href || '';
+    const requestId = (pageUrl.split('id=') || []).pop() || '';
+
     request.getDeployAppealById('?id=' + requestId).then(resS => {
       if(!resS.errorMsg) {
         const {
@@ -166,12 +167,12 @@ class Page extends React.Component{
   renderButton() {
     const baseModel = this.state.baseModel || {};
     let {
-      projectFollowUp = '', id = '', name = '', status = 0
+      id = '', name = '', status = 0
     } = baseModel;
-    projectFollowUp = projectFollowUp.match('http://') ? projectFollowUp : (
-      projectFollowUp.match('http:') ? 'https://' + projectFollowUp.slice(5, projectFollowUp.length) :
-      'https://' + projectFollowUp
-    );
+    const pageUrl = window.location.href || '';
+    const requestId = (pageUrl.split('id=') || []).pop() || '';
+    let projectFollowUp = `../follow?id=${requestId}`;
+
     return (
       <div style={styles.fixedButton}>
         {parseInt(status, 10) === 2 ? <div
@@ -180,8 +181,7 @@ class Page extends React.Component{
           to={parseInt(status, 10) === 2 ? '' : '/fillInfo?id=' + id + '&weaker=' + name + '&nothing=232323'}
           style={{...styles.helpButton, backgroundColor: parseInt(status, 10) === 2 ? '#cbcccd' : '#ff3332'}}
         >帮助TA</Link>}
-        {projectFollowUp ? <a href={projectFollowUp} style={{...styles.followButton, backgroundColor: projectFollowUp ? '#48D1CC' : '#cbcccd'}}>项目跟进</a> :
-          <div style={{...styles.followButton, backgroundColor: projectFollowUp ? '#48D1CC' : '#cbcccd'}}>项目跟进</div>}
+        <a href={projectFollowUp} style={{...styles.followButton, backgroundColor: '#48D1CC'}}>项目跟进</a>
       </div>
     );
   }
@@ -189,6 +189,7 @@ class Page extends React.Component{
   render() {
     return (
       <div style={styles.page}>
+        <div style={styles.warning}>风险防范提示：本信息由求助当事人及其所在街道红十字会提供，其真实性由信息提供者负责。</div>
         {this.renderInfo()}
         {this.renderIllness()}
         {this.renderContactWay()}
@@ -217,7 +218,7 @@ const styles = {
   normalText: {
     flex: 1,
     padding: '0 .4rem',
-    lineHeight: '.6rem',
+    lineHeight: '.9rem',
     fontSize: '.48rem',
     color: '#999999',
     wordWrap: 'break-word',
@@ -232,6 +233,14 @@ const styles = {
     flex: 1,
     margin: '.45rem .4rem',
     height: '5rem'
+  },
+  warning: {
+    width: '100%',
+    padding: '0.4rem .4rem',
+    lineHeight: '.5rem',
+    fontSize: '.4rem',
+    color: '#df2211',
+    backgroundColor: '#f5f5f5'
   },
   page: {
     width: '100%',

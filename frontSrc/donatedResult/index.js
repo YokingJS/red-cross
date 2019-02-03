@@ -117,7 +117,7 @@ class Page extends React.Component {
       <div style={styles.page}>
         <div style={{padding: '.4rem', backgroundColor: '#fff', display: 'flex', flexDirection: 'column'}}>
           <img
-            src="https://gw.alicdn.com/tfs/TB1mkn7pntYBeNjy1XdXXXXyVXa-1080-500.jpg"
+            src="https://gw.alicdn.com/tfs/TB1REj5yntYBeNjy1XdXXXXyVXa-1080-685.jpg"
             alt=""
             style={styles.groupPhoto}
           />

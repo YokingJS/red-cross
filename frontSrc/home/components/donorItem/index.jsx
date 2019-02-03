@@ -24,7 +24,7 @@ class DonorItem extends React.Component {
     } = donorItem;
     let newFamilyDesc = familyDesc.replace(/<\/br>/g, '');
     return (
-      <Link style={styles.donorItem} to={'/donateDetail/' + id}>
+      <Link style={styles.donorItem} to={'/donateDetail?id=' + id}>
         <div style={styles.redCrossInfo}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
@@ -104,7 +104,10 @@ const styles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: '#666'
   },
   redCrossInfo: {
     padding: '0 .4rem',
@@ -121,9 +124,8 @@ const styles = {
     flex: 1,
     height: '.5rem',
     marginLeft: '.3rem',
-    lineHeight: '.42rem',
-    paddingTop: '0.04rem',
-    fontSize: '.36rem',
+    lineHeight: '.5rem',
+    fontSize: '.45rem',
     color: '#999999'
   },
   helpBrief: {
@@ -138,9 +140,9 @@ const styles = {
     flex: 1,
     padding: '0 .4rem',
     marginTop: '.1rem',
-    lineHeight: '.45rem',
-    maxHeight: '.9rem',
-    fontSize: '.36rem',
+    lineHeight: '.65rem',
+    maxHeight: '1.3rem',
+    fontSize: '.45rem',
     color: '#999999'
   },
   donorPhoto: {

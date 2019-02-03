@@ -112,19 +112,19 @@ const styles = {
     overflow: 'scroll'
   },
   modalTitle: {
-    height: '.8rem',
+    height: '.9rem',
     textAlign: 'left',
-    fontSize: '.5rem',
+    fontSize: '.6rem',
     color: '#333333',
-    lineHeight: '.8rem'
+    lineHeight: '.9rem'
   },
   modalContext: {
     width: '9rem',
     maxHeight: '8rem',
     textAlign: 'left',
-    fontSize: '.36rem',
+    fontSize: '.45rem',
     color: '#666666',
-    lineHeight: '.45rem',
+    lineHeight: '.64rem',
     wordBreak: 'break-all'
   }
 };
