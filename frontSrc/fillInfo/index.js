@@ -247,6 +247,7 @@ class FillInfo extends React.Component {
     } = this.state || {};
     return (
       <div style={styles.fillInfo}>
+        <div style={styles.warning}>*为必填项目</div>
         <div style={{...styles.rowLine, padding: '.8rem .4rem'}}>
           <img
             src="https://gw.alicdn.com/tfs/TB1usd5o_tYBeNjy1XdXXXXyVXa-89-87.png"
@@ -324,6 +325,7 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
+        <div style={styles.moneyNotice}>例：1=一元，0.1=一角，0.01=一分</div>
         <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: 'transparent'}}>*</span>
           <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>开具发票:</span>
@@ -428,6 +430,7 @@ class FillInfo extends React.Component {
             </Picker>
           </div>
         </div>
+        <div style={{...styles.moneyNotice, color: '#666'}}>非公开的用户，除本人外其他用户无法在首页捐款查询平台和门户网站每月捐赠信息公示栏目查到相应信息。</div>
         <FootInfo />
         {this.renderButton()}
         <div style={{height: '1.9rem'}}/>
@@ -468,6 +471,21 @@ const styles = {
     display: 'flex',
     alignItems: 'center'
   },
+  warning: {
+    width: '100%',
+    padding: '0.04rem .4rem',
+    lineHeight: '.4rem',
+    fontSize: '.35rem',
+    color: '#df2211',
+    backgroundColor: '#f5f5f5'
+  },
+  moneyNotice: {
+    width: '100%',
+    padding: '0.04rem .4rem .04rem  3.75rem',
+    lineHeight: '.4rem',
+    fontSize: '.35rem',
+    color: '#df2211'
+  },
   boxNoBorder: {
     marginLeft: '.2rem',
     height: '1rem',
@@ -479,7 +497,8 @@ const styles = {
   largeText: {
     lineHeight: '.5rem',
     fontSize: '.48rem',
-    color: '#666666'
+    color: '#666666',
+    fontWeight: 600
   },
   noticeImg: {
     width: '.5rem',

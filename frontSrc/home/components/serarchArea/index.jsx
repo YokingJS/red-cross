@@ -149,8 +149,8 @@ const styles = {
     alignItems: 'center'
   },
   searchButton: {
-    width: '.86rem',
-    height: '.6rem',
+    width: '1.2rem',
+    height: '.8rem',
     marginRight: '.05rem'
   },
   modalContent: {
