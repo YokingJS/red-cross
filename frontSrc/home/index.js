@@ -47,6 +47,7 @@ class Page extends React.Component{
 
   render() {
     const { baseModel = {} } = this.state || {};
+
     return (
       <div style={styles.page}>
         <Banner

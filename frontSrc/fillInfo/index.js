@@ -170,7 +170,7 @@ class FillInfo extends React.Component {
       invoiceMobile: invoiceMobile,
       invoiceAddress: invoiceAddress,
       remark: remark,
-      isDisclosure: isDisclosure,
+      isDisclosure: 1, // 默认公开
       appealRecordTitle: weakerName,
       openId: openCode
     }).then(resS => {
@@ -414,7 +414,7 @@ class FillInfo extends React.Component {
             ></InputItem>
           </div>
         </div>
-        <div style={{...styles.rowLine, marginTop: '.35rem'}}>
+        {/* <div style={{...styles.rowLine, marginTop: '.35rem'}}>
           <span style={{...styles.largeText, color: '#ff3322'}}>*</span>
           <span style={{...styles.largeText, width: '2.8rem', textAlign: 'right'}}>是否公开:</span>
           <div style={styles.boxWithBorder} className="pickerBox">
@@ -430,7 +430,7 @@ class FillInfo extends React.Component {
             </Picker>
           </div>
         </div>
-        <div style={{...styles.moneyNotice, color: '#666'}}>非公开的用户，除本人外其他用户无法在首页捐款查询平台和门户网站每月捐赠信息公示栏目查到相应信息。</div>
+        <div style={{...styles.moneyNotice, color: '#666'}}>非公开的用户，除本人外其他用户无法在首页捐款查询平台和门户网站每月捐赠信息公示栏目查到相应信息。</div> */}
         <FootInfo />
         {this.renderButton()}
         <div style={{height: '1.9rem'}}/>
