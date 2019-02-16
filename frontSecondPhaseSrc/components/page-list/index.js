@@ -8,8 +8,8 @@ import '../../../node_modules/react-pullload/dist/ReactPullLoad.css';
 // import mock from '../../../mock/index';
 // let newMock = mock.data;
 
-const pageUrl = window.location.pathname || '';
-const requestId = (pageUrl.split('/') || []).pop() || '';
+const pageUrl = window.location.href || '';
+const requestId = (pageUrl.split('id=') || []).pop() || '';
 
 class PageTitle extends React.Component {
   constructor(){
@@ -28,12 +28,12 @@ class PageTitle extends React.Component {
   }
 
   getPageInfo = () => {
-    let { index = 1 } = this.state
+    let { index = 1, data = [] } = this.state
 
     const dealResule = (resS) => {
 
       this.setState({
-        data: resS,
+        data: data.concat(resS),
         index: ++index,
         action: STATS.reset
       }, () => {
@@ -43,9 +43,9 @@ class PageTitle extends React.Component {
     // newMock.push(mock.data[index] || []);
 
     // dealResule(newMock);
-    request.getOrderByAppealRecordId(`?id=${requestId}&index=${index}&size=20`).then(resS => {
+    request.getOrderByAppealRecordId(`?id=${requestId}&index=${index}&size=200`).then(resS => {
       if(!resS.errorMsg) {
-        dealResule(resS.data);
+        dealResule(resS.data || []);
       }
     });
   }
@@ -87,21 +87,28 @@ class PageTitle extends React.Component {
         const { data, hasMore } = this.state
 
         return (
-          <ReactPullLoad 
-            action={this.state.action}
-            handleAction={this.handleAction}
-            // hasMore={hasMore}
-            style={{paddingTop: 5}}
-          >
+          <div style={{paddingTop: '15px'}}>
             {
               data.map(item => {
                 return (<ListItem data={item} />);
               })
             }
-            <div style={styles.moreBox}>
-              {/* <Button onClick={this.handLoadMore} style={styles.loadMore}>加载更多(手机端无需点击)</Button> */}
-            </div>
-          </ReactPullLoad>
+          </div>
+          // <ReactPullLoad 
+          //   action={this.state.action}
+          //   handleAction={this.handleAction}
+          //   hasMore={false}
+          //   style={{paddingTop: 5}}
+          // >
+          //   {
+          //     data.map(item => {
+          //       return (<ListItem data={item} />);
+          //     })
+          //   }
+          //   <div style={styles.moreBox}>
+          //     {/* <Button onClick={this.handLoadMore} style={styles.loadMore}>加载更多(手机端无需点击)</Button> */}
+          //   </div>
+          // </ReactPullLoad>
         )
       }    
 }

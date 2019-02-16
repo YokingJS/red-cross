@@ -1,10 +1,11 @@
 
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { ImagePicker, Modal, Toast } from 'antd-mobile';
+import { ImagePicker, Modal, Toast, Button } from 'antd-mobile';
 
 import request from '../components/request';
-import ListItem from './components/listItem'
+import ListItem from './components/listItem';
+import InputDonator from './components/inputDonator';
 
 const ALERT = Modal.alert;
 const MARGINTOP = '10px';
@@ -27,6 +28,7 @@ class Page extends React.Component {
     this.onDownload = this.onDownload.bind(this);
     this.renderBannerList = this.renderBannerList.bind(this);
     this.onDeleteWeaker = this.onDeleteWeaker.bind(this);
+    this.onDeleteDonator = this.onDeleteDonator.bind(this);
     this.onSetTop = this.onSetTop.bind(this);
   }
   
@@ -96,6 +98,32 @@ class Page extends React.Component {
         }
       });
     }
+  }
+
+  onDeleteDonator(id, index) {
+    const alertInstance = ALERT('确认提醒', '你确认要删除吗？？？', [
+      { text: '取消', onPress: () => {}, style: 'default' },
+      { 
+        text: '确认',
+        onPress: () => {
+
+          const { donorBaseModel = [] } = this.state || {};
+          request.deleteOrderById('?id=' + id).then(resS => {
+            if(!resS.errorMsg) {
+              const { donorBaseModel = [] } = this.state || {};
+              donorBaseModel.splice(index, 1);
+              this.setState({
+                donorBaseModel: donorBaseModel
+              });
+            } else {
+              Toast.fail(resS.errorMsg, 1.5);
+            }
+          }, resE => {
+            Toast.fail('删除失败，请稍后再试', 1.5);
+          });
+       }
+      },
+    ]);
   }
 
   onDeleteWeaker(id, index) {
@@ -346,13 +374,15 @@ class Page extends React.Component {
             />
           );
         })}
-        {donorBaseModel.length > 0 ? <div style={{lineHeight: '70px', fontSize: '20px', color: '#333333', textAlign: 'left', marginTop: '10px'}}>捐助信息列表</div> : null}
+        <div style={{lineHeight: '70px', fontSize: '20px', color: '#333333', textAlign: 'left', marginTop: '10px'}}>捐助信息列表</div>
+        <InputDonator weakerData={weakerBaseModel} />
         {donorBaseModel.map((item, index) => {
           return (
             <ListItem
               key={index + 'dornor'}
               data={item}
               index={index}
+              onDeleteDonator={this.onDeleteDonator}
               isWeaker={false}
             />
           );
