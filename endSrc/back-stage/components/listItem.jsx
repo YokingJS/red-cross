@@ -7,7 +7,8 @@ class ListItem extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.cancelDeploy = this.cancelDeploy.bind(this);
-    this.onDeleteItem = this.onDeleteItem.bind(this);
+    this.onDeleteWeaker = this.onDeleteWeaker.bind(this);
+    this.onDeleteDonator = this.onDeleteDonator.bind(this);
     this.onSetTop = this.onSetTop.bind(this);
   }
 
@@ -24,7 +25,7 @@ class ListItem extends React.Component {
     });
   }
 
-  onDeleteItem() {
+  onDeleteWeaker() {
     const data = this.props.data || {};
     const index = this.props.index;
     const isWeaker = this.props.isWeaker || false;
@@ -34,6 +35,18 @@ class ListItem extends React.Component {
     } = data;
     if (id && onDeleteWeaker) {
       onDeleteWeaker && onDeleteWeaker(id, index);
+    }
+  }
+
+  onDeleteDonator() {
+    const data = this.props.data || {};
+    const index = this.props.index;
+    const onDeleteDonator = this.props.onDeleteDonator;
+    const {
+      id = ''
+    } = data;
+    if (id && onDeleteDonator) {
+      onDeleteDonator && onDeleteDonator(id, index);
     }
   }
 
@@ -55,7 +68,7 @@ class ListItem extends React.Component {
     const isWeaker = this.props.isWeaker || false;
     const itemIndex = this.props.index || 0;
     const {
-      age = '', name = '', currentMoney = '', donatorNum = '', status = '', gmtModify = '', id = '', mobile = '',
+      age = '', name = '', currentMoney = '', donatorNum = '', status = '', gmtModify = '', id = '', mobile = '', realTotalMoney = '',
       money = '', donateTime = '', isNeedInvoice = '', weixinPayId = '', appealRecordTitle = '', remark = '', top = false
     } = data;
     // 救助姓名、已筹金额、捐款人数，项目状态、发布时间
@@ -91,6 +104,12 @@ class ListItem extends React.Component {
           <span style={styles.modelItemTitle}>{isWeaker ? '已筹金额' : '捐助金额'}</span>
           <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{isWeaker ? currentMoney / 100 : money / 100}元</span>
         </div>
+        {
+          isWeaker ? <div style={styles.modelItem}>
+          <span style={styles.modelItemTitle}>实际捐助金额</span>
+          <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>{realTotalMoney / 100}元</span>
+        </div> : null
+        }
         <div style={styles.modelItem}>
           <span style={styles.modelItemTitle}>{isWeaker ? '捐款人数' : '捐助时间'}</span>
           <span style={{...styles.modelItemTitle, color: '#666', ...styles.textOverflow}}>
@@ -121,8 +140,13 @@ class ListItem extends React.Component {
           <div style={styles.modelItemButton} onClick={this.cancelDeploy}>取消发布</div>
         </div>}
         {isWeaker ? <div style={{...styles.modelItem, ...styles.buttonBox}}>
-          <div style={styles.modelItemButton} onClick={this.onDeleteItem}>删除</div>
+          <div style={styles.modelItemButton} onClick={this.onDeleteWeaker}>删除</div>
         </div> : null}
+        {
+          !isWeaker && !weixinPayId ? <div style={{...styles.modelItem, ...styles.buttonBox}}>
+          <div style={styles.modelItemButton} onClick={this.onDeleteDonator}>删除</div>
+        </div> : null
+        }
       </div>
     );
   }

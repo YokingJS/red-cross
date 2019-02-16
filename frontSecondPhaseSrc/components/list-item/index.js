@@ -51,13 +51,13 @@ const styles = {
     padding: '0.1rem'
   },
   name: {
-    fontSize: '0.2rem',
+    fontSize: '0.3rem',
     color: '#43966a',
     display: 'flex',
     flexDirection: 'row'
   },
   color6: {
-    fontSize: '0.2rem',
+    fontSize: '0.3rem',
     color: '#666',
     display: 'flex',
     flexDirection: 'row'

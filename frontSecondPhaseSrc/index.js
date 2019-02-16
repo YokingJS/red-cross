@@ -12,6 +12,7 @@ class App extends React.Component {
         keyLength={12}
       >
         <div>
+          <Route exact path="/follow" component={FollowUp} />
           <Route exact path="/" component={FollowUp} />
         </div>
       </BrowserRouter>

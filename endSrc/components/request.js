@@ -127,6 +127,14 @@ let unsetAppealRecordTop = (paramUrl) => {
   return getRequest(HOST_PORT + '/unsetAppealRecordTop' + paramUrl);
 };
 
+let deleteOrderById = (paramUrl) => {
+  return getRequest(HOST_PORT + '/deleteOrderById' + paramUrl);
+};
+
+let insertOrderRecord = (param) => {
+  return postRequest(HOST_PORT + '/insertOrderRecord', JSON.stringify(param));
+}
+
 let request =  {
   getInitInformation: getInitInformation,
   unifiedOrder: unifiedOrder,
@@ -144,6 +152,8 @@ let request =  {
   getOrderById: getOrderById,
   deleteBannerImageById: deleteBannerImageById,
   deleteAppealRecordById: deleteAppealRecordById,
+  deleteOrderById: deleteOrderById,
+  insertOrderRecord: insertOrderRecord,
   setAppealRecordTop: setAppealRecordTop,
   unsetAppealRecordTop: unsetAppealRecordTop
 };
