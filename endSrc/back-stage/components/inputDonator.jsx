@@ -108,7 +108,8 @@ class Page extends React.Component {
 
     if (appealRecordId && name && mobile && gmtModifyDate) {
       request.insertOrderRecord({
-        name, appealRecordId, money, mobile, appealRecordTitle,
+        name, appealRecordId, mobile, appealRecordTitle, gmtModifyDate,
+        money: money * 100,
         isPaySuccess: 1
       }).then(resS => {
         if (resS.errorMsg) {
